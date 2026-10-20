@@ -1,0 +1,115 @@
+/*
+ * Survols « encre » partagés : pastilles des réseaux, icônes, liens textuels.
+ *
+ * Même grammaire que le bouton pinceau, pour un site homogène :
+ *  - une forme d'encre (tache, soulignement) se pose ou se peint ;
+ *  - la couleur du contenu bascule au même moment ;
+ *  - le focus clavier déclenche exactement le même effet que la souris ;
+ *  - en mouvement réduit, l'état final s'affiche sans geste.
+ * Formes : variables --ml-masque-* de tokens.css.
+ */
+
+@layer components {
+  /* ——— Pastilles des réseaux (pied de page) ———
+   * Plus de pastille « active » : la rose de la maquette était un état figé. */
+  .pastille-sociale {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    border-radius: 999px;
+    background: var(--color-craie);
+    color: var(--color-nuit);
+    transition: color var(--ml-duree-courte) var(--ease-sortie) 60ms;
+  }
+  .pastille-sociale::before {
+    content: '';
+    position: absolute;
+    inset: -12%;
+    z-index: -1;
+    background: var(--color-axe-rose);
+    -webkit-mask: var(--ml-masque-tache) center / contain no-repeat;
+    mask: var(--ml-masque-tache) center / contain no-repeat;
+    opacity: 0;
+    scale: 0.25;
+    rotate: -35deg;
+    transition:
+      opacity 180ms var(--ease-sortie),
+      scale 420ms var(--ease-ressort),
+      rotate 420ms var(--ease-sortie);
+  }
+  .pastille-sociale:is(:hover, :focus-visible) {
+    color: var(--color-craie);
+  }
+  .pastille-sociale:is(:hover, :focus-visible)::before {
+    opacity: 1;
+    scale: 1;
+    rotate: 0deg;
+  }
+  .pastille-sociale:active::before {
+    scale: 0.9;
+  }
+
+  /* ——— Icônes nues (barre du haut) ——— */
+  .icone-sociale {
+    display: grid;
+    place-items: center;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    color: var(--color-craie);
+    translate: 0 0;
+    transition:
+      color var(--ml-duree-courte) var(--ease-sortie),
+      translate var(--ml-duree) var(--ease-ressort);
+  }
+  .icone-sociale:is(:hover, :focus-visible) {
+    color: var(--color-vert-clair);
+    translate: 0 -2px;
+  }
+
+  /* ——— Liens textuels : le soulignement se peint de gauche à droite ——— */
+  .lien-encre {
+    position: relative;
+    text-decoration: none;
+  }
+  .lien-encre__texte {
+    position: relative;
+  }
+  .lien-encre__texte::after {
+    content: '';
+    position: absolute;
+    inset-inline: -0.08em;
+    inset-block-end: -0.28em;
+    block-size: 0.36em;
+    background: currentColor;
+    opacity: 0.32;
+    -webkit-mask: var(--ml-masque-souligne) 0 0 / 100% 100% no-repeat;
+    mask: var(--ml-masque-souligne) 0 0 / 100% 100% no-repeat;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 380ms var(--ease-encre);
+    pointer-events: none;
+  }
+  :is(.lien-encre:is(:hover, :focus-visible), .group:is(:hover, :focus-within) .lien-encre) .lien-encre__texte::after,
+  .lien-encre[aria-current='page'] .lien-encre__texte::after {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pastille-sociale::before {
+    rotate: 0deg;
+    scale: 1;
+    transition: opacity var(--ml-duree-courte) linear;
+  }
+  .icone-sociale {
+    transition: color var(--ml-duree-courte) linear;
+  }
+  .icone-sociale:is(:hover, :focus-visible) {
+    translate: 0 0;
+  }
+  .lien-encre__texte::after {
+    transition: none;
+  }
+}

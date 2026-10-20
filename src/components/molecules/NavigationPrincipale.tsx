@@ -56,7 +56,7 @@ export function NavigationPrincipale({ items, libelle }: { items: NavigationItem
           ) : (
             <li key={item.libelle}>
               <Link href={item.href} aria-current={pathname === item.href ? 'page' : undefined} className={classeLien}>
-                {item.libelle}
+                <span className="lien-encre__texte">{item.libelle}</span>
               </Link>
             </li>
           ),
@@ -67,7 +67,7 @@ export function NavigationPrincipale({ items, libelle }: { items: NavigationItem
 }
 
 const classeLien =
-  'relative flex items-center gap-1 rounded-panneau px-2 py-1 text-[1.125rem] leading-7 font-medium text-texte transition-colors hover:text-accent aria-[current=page]:text-accent'
+  'lien-encre relative flex items-center gap-1 rounded-panneau px-2 py-1 text-[1.125rem] leading-7 font-medium text-texte transition-colors hover:text-accent aria-[current=page]:text-accent'
 
 function Rubrique({
   item,
@@ -103,7 +103,7 @@ function Rubrique({
         onClick={basculer}
         className={cn(classeLien, actif && 'text-accent')}
       >
-        {item.libelle}
+        <span className="lien-encre__texte">{item.libelle}</span>
         <span
           aria-hidden="true"
           className={cn('text-legende text-texte-doux transition-transform duration-200', ouvert && 'rotate-180')}

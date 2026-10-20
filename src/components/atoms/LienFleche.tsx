@@ -13,7 +13,8 @@ const couleurs: Record<Ton, string> = {
 }
 
 /**
- * Lien textuel suivi d'une flèche qui glisse au survol.
+ * Lien textuel suivi d'une flèche qui glisse au survol ; le soulignement se
+ * peint de gauche à droite (composants/survols.css).
  * `etendu` agrandit la zone de clic à toute la carte parente (positionnée).
  */
 export function LienFleche({
@@ -39,14 +40,14 @@ export function LienFleche({
       href={href}
       aria-label={libelleAccessible}
       className={cn(
-        'group inline-flex items-baseline gap-2 underline-offset-4 hover:underline',
+        'lien-encre group inline-flex items-baseline gap-2',
         taille === 'fort' ? 'text-normal font-semibold' : 'text-petit',
         couleurs[ton],
         etendu && 'lien-etendu',
         className,
       )}
     >
-      {children}
+      <span className="lien-encre__texte">{children}</span>
       <span aria-hidden="true" className="fleche">
         →
       </span>

@@ -184,12 +184,14 @@
   }
 }
 
-@keyframes ecriture {
+@keyframes ecriture-pinceau {
   from {
-    clip-path: inset(-10% 100% -10% 0);
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
   }
   to {
-    clip-path: inset(-10% 0 -10% 0);
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
   }
 }
 
@@ -217,8 +219,11 @@
   .annotation-fleche path {
     animation: trace-trait 600ms var(--ease-sortie) 1.5s both;
   }
+  /* L'annotation s'écrit derrière un front de pinceau, pas par un balayage droit. */
   .annotation-ecrite {
-    animation: ecriture 1.1s steps(18, end) 1.9s both;
+    -webkit-mask: var(--ml-masque-balayage) 100% 0 / 260% 100% no-repeat;
+    mask: var(--ml-masque-balayage) 100% 0 / 260% 100% no-repeat;
+    animation: ecriture-pinceau 1.4s var(--ease-encre) 1.9s both;
   }
   .souffle-une-fois {
     animation: coeur-pose 900ms var(--ease-ressort) 1.2s both;
@@ -239,5 +244,238 @@
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .group:hover :is(.porte-pinceau, .axe-pinceau) {
     transform: scaleX(1.18) rotate(-1.5deg);
+  }
+}
+
+/* ————————————————————————————————————————————————————————————
+ * Décors « encre » : chaque pinceau, main ou déchirure se pose
+ * dans le sens où il a été peint. Une seule grammaire pour tout le site :
+ *
+ *   data-encre="gauche|droite|haut|bas"   d'où part le pinceau
+ *   data-encre-quand="chargement"         au premier rendu (hero) ;
+ *                                         sinon au défilement (view())
+ *   data-derive                           motif de fond qui dérive très
+ *                                         lentement au défilement (bureau)
+ *
+ * Décoratif : sans support, le décor est simplement là (pas de repli JS).
+ * ———————————————————————————————————————————————————————————— */
+
+@keyframes encre-depuis-gauche {
+  from {
+    clip-path: inset(-5% 100% -5% -5%);
+  }
+  to {
+    clip-path: inset(-5% -5% -5% -5%);
+  }
+}
+@keyframes encre-depuis-droite {
+  from {
+    clip-path: inset(-5% -5% -5% 100%);
+  }
+  to {
+    clip-path: inset(-5% -5% -5% -5%);
+  }
+}
+@keyframes encre-depuis-haut {
+  from {
+    clip-path: inset(-5% -5% 100% -5%);
+  }
+  to {
+    clip-path: inset(-5% -5% -5% -5%);
+  }
+}
+@keyframes encre-depuis-bas {
+  from {
+    clip-path: inset(100% -5% -5% -5%);
+  }
+  to {
+    clip-path: inset(-5% -5% -5% -5%);
+  }
+}
+@keyframes derive {
+  from {
+    translate: 0 2.5rem;
+  }
+  to {
+    translate: 0 -2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-encre='gauche'] {
+    --encre: encre-depuis-gauche;
+  }
+  [data-encre='droite'] {
+    --encre: encre-depuis-droite;
+  }
+  [data-encre='haut'] {
+    --encre: encre-depuis-haut;
+  }
+  [data-encre='bas'] {
+    --encre: encre-depuis-bas;
+  }
+
+  [data-encre][data-encre-quand='chargement'] {
+    animation: var(--encre) 1.1s var(--ease-encre) both;
+    animation-delay: var(--encre-delai, 150ms);
+  }
+
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    [data-encre]:not([data-encre-quand]) {
+      animation: var(--encre) linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 40%;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    @supports ((animation-timeline: view()) and (animation-range: entry)) {
+      [data-derive] {
+        translate: 0 0;
+        animation: derive linear both;
+        animation-timeline: view();
+        animation-range: cover;
+      }
+    }
+  }
+}
+
+/* ——— Photos dans la feuille : elles éclosent par le masque ——— */
+
+@keyframes feuille-ouvre {
+  from {
+    clip-path: circle(12% at 35% 65%);
+  }
+  to {
+    clip-path: circle(100% at 50% 50%);
+  }
+}
+@keyframes photo-se-pose {
+  from {
+    scale: 1.14;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    [data-feuille] {
+      animation: feuille-ouvre linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 35%;
+    }
+    [data-feuille] img {
+      scale: 1;
+      animation: photo-se-pose linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 50%;
+    }
+  }
+}
+
+/* ——— En-tête : il se pose sur la page dès qu'on défile ——— */
+
+/* Même espace colorimétrique que bg-craie/85 (color-mix oklab), sinon
+   l'interpolation entre oklab et sRGB produit une couleur aberrante. */
+@keyframes entete-pose {
+  from {
+    background-color: color-mix(in oklab, var(--color-craie) 85%, transparent);
+    box-shadow: 0 10px 30px -18px color-mix(in oklab, var(--color-nuit) 0%, transparent);
+  }
+  to {
+    background-color: color-mix(in oklab, var(--color-craie) 95%, transparent);
+    box-shadow: 0 10px 30px -18px color-mix(in oklab, var(--color-nuit) 35%, transparent);
+  }
+}
+@keyframes logo-compact {
+  to {
+    scale: 0.86;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
+    .entete-collant {
+      animation: entete-pose linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 8rem;
+    }
+    .entete-collant .entete-logo {
+      transform-origin: 0 50%;
+      scale: 1;
+      animation: logo-compact linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 8rem;
+    }
+  }
+}
+
+/* ——— Barre WhatsApp : se pose une fois, après l'entrée du hero ——— */
+
+@keyframes barre-pose {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .barre-pose {
+    animation: barre-pose 700ms var(--ease-ressort) 1.6s both;
+  }
+}
+
+/* ——— Logos partenaires : en retrait, ils prennent leurs couleurs au survol ——— */
+
+@media (hover: hover) {
+  .logo-partenaire {
+    filter: grayscale(1);
+    opacity: 0.72;
+    transition:
+      filter var(--ml-duree) var(--ease-sortie),
+      opacity var(--ml-duree) var(--ease-sortie);
+  }
+  :is(a, li):is(:hover, :focus-within) > .logo-partenaire,
+  a:is(:hover, :focus-visible) .logo-partenaire {
+    filter: none;
+    opacity: 1;
+  }
+}
+
+/* ——— « Faire défiler » : une goutte d'encre coule le long du trait ——— */
+
+@keyframes goutte-coule {
+  0% {
+    translate: 0 -100%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    translate: 0 1900%;
+    opacity: 0;
+  }
+}
+
+.trait-defile {
+  position: relative;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .trait-defile::after {
+    content: '';
+    position: absolute;
+    inset-inline: -1px;
+    inset-block-start: 0;
+    block-size: 5%;
+    border-radius: 2px;
+    background: var(--color-axe-rose);
+    translate: 0 -100%;
+    /* Trois passages puis repos : pas de mouvement sans fin (WCAG 2.2.2). */
+    animation: goutte-coule 2.8s var(--ease-encre) 2.8s 3;
   }
 }

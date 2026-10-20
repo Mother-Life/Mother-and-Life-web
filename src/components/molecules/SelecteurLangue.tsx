@@ -34,9 +34,9 @@ export function SelecteurLangue({
             lang={l}
             aria-label={libelles[l].long}
             aria-current={l === locale ? 'true' : undefined}
-            className={cn('rounded-sm px-0.5 hover:underline', l === locale ? 'font-bold' : 'opacity-80')}
+            className={cn('lien-encre rounded-sm px-0.5', l === locale ? 'font-bold' : 'opacity-80')}
           >
-            {libelles[l].court}
+            <span className="lien-encre__texte">{libelles[l].court}</span>
           </Link>
         </span>
       ))}

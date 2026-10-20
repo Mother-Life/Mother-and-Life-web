@@ -18,6 +18,7 @@ export function SectionPortes({ portes, id }: { portes: HomeContent['portes']; i
       </h2>
       <Illustration
         src={mains}
+        encre="gauche"
         className="absolute top-[10.375rem] left-0 -z-10 hidden h-auto w-[14.625rem] lg:block"
       />
       <ul className="contenu grid max-w-md justify-center gap-6 sm:max-w-none sm:grid-cols-[repeat(auto-fit,minmax(0,18.75rem))]">

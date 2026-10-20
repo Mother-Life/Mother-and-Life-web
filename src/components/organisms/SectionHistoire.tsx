@@ -15,13 +15,21 @@ export function SectionHistoire({ histoire }: { histoire: HomeContent['histoire'
     <section aria-labelledby="histoire-titre" className="relative isolate overflow-hidden bg-fond section-py">
       <Illustration
         src={motifMains}
+        derive
         className="absolute top-0 right-0 -z-10 hidden h-auto w-[47.3125rem] opacity-[0.06] lg:block"
       />
       <figure className="contenu flex max-w-[51.25rem] flex-col items-center gap-5 text-center" data-revele>
         <Surtitre className="justify-center">
           <span id="histoire-titre">{histoire.surtitre}</span>
         </Surtitre>
-        <svg viewBox="0 0 51 40" width="51" height="40" aria-hidden="true" className="text-pigment-rose">
+        <svg
+          viewBox="0 0 51 40"
+          width="51"
+          height="40"
+          aria-hidden="true"
+          data-encre="gauche"
+          className="text-pigment-rose"
+        >
           <path
             fill="currentColor"
             d="M11.2 39.62q-5.74 0-8.54-3.64Q0 32.33 0 26.74q0-4.9 2.1-9.52a34 34 0 0 1 6.02-9.1A47 47 0 0 1 17.5 0l1.68 2.24q-5.74 4.48-8.26 9.24A22 22 0 0 0 8.4 21h3.78q3.36 0 5.46 1.12a6.3 6.3 0 0 1 3.08 2.94 8 8 0 0 1 1.12 4.2q0 4.34-3.08 7.42-2.94 2.94-7.56 2.94m28.42 0q-5.74 0-8.54-3.64-2.66-3.65-2.66-9.24 0-4.9 2.1-9.52a37 37 0 0 1 6.16-9.1A49 49 0 0 1 45.92 0l1.82 2.24q-5.88 4.48-8.4 9.24A22 22 0 0 0 36.82 21h3.78q3.36 0 5.46 1.12a6.2 6.2 0 0 1 3.22 2.94 8 8 0 0 1 1.12 4.2q0 4.34-3.08 7.42-2.94 2.94-7.7 2.94"

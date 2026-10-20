@@ -25,11 +25,15 @@ export function HeroAccueil({ hero, ui, ancreSuite }: Props) {
       <Illustration
         src={pinceauHaut}
         differee={false}
+        encre="droite"
+        encreAuChargement
         className="absolute top-0 right-0 -z-10 hidden h-auto w-[33.34rem] lg:block"
       />
       <Illustration
         src={pinceauBas}
         differee={false}
+        encre="gauche"
+        encreAuChargement
         className="absolute bottom-0 left-0 -z-10 h-auto w-[96%] max-w-none"
       />
       <div className="contenu grid items-center gap-y-12 pt-10 pb-28 lg:min-h-[53.75rem] lg:grid-cols-[minmax(0,32.5rem)_1fr] lg:content-start lg:gap-x-24 lg:pt-16 lg:pb-36">
@@ -108,7 +112,7 @@ export function HeroAccueil({ hero, ui, ancreSuite }: Props) {
         href={`#${ancreSuite}`}
         className="group absolute top-[9.25rem] left-1/2 hidden -translate-x-1/2 flex-col items-center gap-5 text-limon lg:flex"
       >
-        <span aria-hidden="true" className="h-[19.9rem] w-[1.5px] bg-current" />
+        <span aria-hidden="true" className="trait-defile h-[19.9rem] w-[1.5px] bg-current" />
         <span className="text-[1.25rem] font-bold tracking-wide uppercase [writing-mode:vertical-rl] rotate-180">
           {ui.faireDefiler}
         </span>

@@ -17,6 +17,7 @@ export function SectionActualites({ actualites, ui }: { actualites: HomeContent[
     <section aria-labelledby="actualites-titre" className="relative isolate overflow-hidden bg-fond section-py">
       <Illustration
         src={vagues}
+        derive
         className="absolute right-[-7.5rem] bottom-[-1rem] -z-10 hidden h-[22rem] w-auto -scale-x-100 lg:block"
       />
       <div className="contenu flex flex-col gap-12">
@@ -47,12 +48,13 @@ export function SectionActualites({ actualites, ui }: { actualites: HomeContent[
                 {/* Bord peint Craie qui « déchire » le haut de la photo */}
                 <Illustration
                   src={pinceauAlbum}
+                  encre="gauche"
                   className="absolute top-[-4.25rem] left-[31.5%] h-auto w-[77.2%] max-w-none"
                 />
               </div>
               <h3 className="text-h2 font-semibold text-texte">
-                <Link href={album.href} className="lien-etendu">
-                  {album.titre}
+                <Link href={album.href} className="lien-etendu lien-encre">
+                  <span className="lien-encre__texte">{album.titre}</span>
                 </Link>
               </h3>
               {album.resume && <p className="text-normal text-texte-doux">{album.resume}</p>}

@@ -8,8 +8,11 @@
  *   repos      le trait est posé
  *   apparition le trait se peint de gauche à droite (classe .entree-trace ou
  *              data-revele="trace" sur .bouton-pinceau__fond)
- *   survol     le trait s'étire et pivote d'un demi-degré ; une seconde couche
- *              d'encre, décalée, vient l'épaissir
+ *   survol     une seconde couche d'encre (--bp-peinture) se peint par-dessus,
+ *              de gauche à droite, derrière un front de poils de pinceau ; le
+ *              trait s'étire et pivote d'un demi-degré, la flèche avance
+ *   sortie     la seconde couche sèche (fondu), sans repasser en arrière
+ *   tactile    même effet, déclenché par la pression
  *   pression   le trait s'écrase légèrement
  *   focus      anneau de focus franc, le trait reste lisible
  *   attente    (aria-busy) le trait respire pendant l'envoi d'un formulaire
@@ -24,6 +27,9 @@
     --bp-encre: var(--color-encre);
     --bp-texte: var(--color-craie);
     --bp-trait: var(--color-limon);
+    /* Encre de la seconde couche : la même, plus dense (plus claire pour le rose,
+       dont le texte Nuit doit garder son contraste). */
+    --bp-peinture: color-mix(in oklab, var(--bp-encre) 55%, var(--color-nuit));
     --bp-hauteur: 3.25rem;
     --bp-marge: 1.75rem;
 
@@ -62,10 +68,15 @@
     line-height: var(--text-bouton-l--line-height);
   }
 
-  /* Variantes d'encre */
+  /* Variantes d'encre. Encre (par défaut) : la seconde couche est la Nuit. */
+  .bouton-pinceau:not([data-variante]),
+  .bouton-pinceau[data-variante='encre'] {
+    --bp-peinture: var(--color-nuit);
+  }
   .bouton-pinceau[data-variante='rose'] {
     --bp-encre: var(--color-pigment-rose);
     --bp-texte: var(--color-nuit);
+    --bp-peinture: color-mix(in oklab, var(--color-pigment-rose) 78%, white);
   }
   .bouton-pinceau[data-variante='action'] {
     --bp-encre: var(--color-axe-rose);
@@ -76,6 +87,7 @@
   .bouton-pinceau[data-variante='contour'] {
     --bp-encre: var(--color-craie);
     --bp-texte: var(--color-encre);
+    --bp-peinture: var(--color-sable);
   }
 
   /* Couches du pinceau */
@@ -107,15 +119,68 @@
     transform: scale(1.03, 1.12);
   }
 
+  /*
+   * Seconde couche : révélée par un masque large (240 %) dont le bord est un
+   * front de poils de pinceau. Position 100 % : la partie transparente est
+   * visible ; position 0 % : la partie opaque. En glissant, le front traverse
+   * le bouton de gauche à droite. À la sortie, la couche fond, puis le masque
+   * revient à sa place sans être vu (transition différée).
+   */
+  .bouton-pinceau__couche--peinture {
+    fill: var(--bp-peinture);
+    opacity: 0;
+    -webkit-mask-image: var(--ml-masque-balayage);
+    mask-image: var(--ml-masque-balayage);
+    -webkit-mask-size: 240% 100%;
+    mask-size: 240% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+    transition:
+      opacity 260ms var(--ease-sortie),
+      -webkit-mask-position 0s linear 260ms,
+      mask-position 0s linear 260ms,
+      transform var(--ml-duree) var(--ease-sortie);
+  }
+
+  /* Survol à la souris et focus clavier : même geste de peinture. */
   @media (hover: hover) {
-    .bouton-pinceau:hover .bouton-pinceau__couche--principale {
+    .bouton-pinceau:is(:hover, :focus-visible) .bouton-pinceau__couche--peinture {
+      opacity: 1;
+      -webkit-mask-position: 0 0;
+      mask-position: 0 0;
+      transform: scaleX(1.04) rotate(-0.6deg);
+      transition:
+        opacity 0s,
+        -webkit-mask-position 460ms var(--ease-encre),
+        mask-position 460ms var(--ease-encre),
+        transform var(--ml-duree) var(--ease-sortie);
+    }
+  }
+  /* Écran tactile : le geste joue à la pression. */
+  @media (hover: none) {
+    .bouton-pinceau:active .bouton-pinceau__couche--peinture {
+      opacity: 1;
+      -webkit-mask-position: 0 0;
+      mask-position: 0 0;
+      transition:
+        opacity 0s,
+        -webkit-mask-position 240ms var(--ease-encre),
+        mask-position 240ms var(--ease-encre);
+    }
+  }
+
+  @media (hover: hover) {
+    .bouton-pinceau:is(:hover, :focus-visible) .bouton-pinceau__couche--principale {
       transform: scaleX(1.04) rotate(-0.6deg);
     }
-    .bouton-pinceau:hover .bouton-pinceau__couche--seconde {
-      opacity: 0.35;
-      transform: translate(5px, 3px) scaleX(1.06) rotate(0.8deg);
+    /* Une ombre d'encre très légère, décalée : la profondeur sans le flou. */
+    .bouton-pinceau:is(:hover, :focus-visible) .bouton-pinceau__couche--seconde {
+      opacity: 0.16;
+      transform: translate(4px, 3px) scaleX(1.05) rotate(0.8deg);
     }
-    .bouton-pinceau:hover .bouton-pinceau__couche--trait {
+    .bouton-pinceau:is(:hover, :focus-visible) .bouton-pinceau__couche--trait {
       transform: scale(1.07, 1.14) rotate(-0.6deg);
     }
   }
@@ -139,6 +204,7 @@
   .bouton-pinceau:disabled {
     --bp-encre: var(--color-limon);
     --bp-texte: var(--color-craie);
+    --bp-peinture: var(--color-limon);
     cursor: not-allowed;
   }
 
@@ -172,6 +238,11 @@
   }
   .bouton-pinceau .bouton-pinceau__couche--trait {
     transform: scale(1.03, 1.12);
+  }
+  /* Pas de balayage : la seconde couche apparaît d'un coup, l'état reste lisible. */
+  .bouton-pinceau .bouton-pinceau__couche--peinture {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }
 

@@ -26,9 +26,10 @@ export function SectionPreuve({ preuve, ui, locale }: { preuve: HomeContent['pre
     <section aria-labelledby="preuve-titre" className="relative isolate overflow-hidden bg-fond section-py">
       <Illustration
         src={motifMains}
+        derive
         className="absolute top-0 left-0 -z-10 hidden h-auto w-[46.5625rem] opacity-[0.06] lg:block"
       />
-      <Illustration src={pinceau} className="absolute top-0 right-0 -z-10 hidden h-auto w-[24.34rem] lg:block" />
+      <Illustration src={pinceau} encre="droite" className="absolute top-0 right-0 -z-10 hidden h-auto w-[24.34rem] lg:block" />
       <div className="contenu flex flex-col gap-20">
         <div className="grid items-center gap-x-24 gap-y-14 lg:grid-cols-[minmax(0,35rem)_1fr]">
           <Collage preuve={preuve} />
@@ -75,10 +76,10 @@ function Collage({ preuve }: { preuve: HomeContent['preuve'] }) {
         aria-hidden="true"
         className="absolute top-[13.46%] left-[-3.57%] h-[74.5%] w-[70.5%] border-[5px] border-pigment-rose [border-radius:7.6%_75.9%_7.6%_75.9%/7.2%_71.9%_7.2%_71.9%]"
       />
-      <div className="absolute top-0 left-0 h-[83.9%] w-[71.4%] overflow-hidden bg-sable [border-radius:12%_75%_12%_75%/10.2%_63.8%_10.2%_63.8%]">
+      <div data-feuille className="absolute top-0 left-0 h-[83.9%] w-[71.4%] overflow-hidden bg-sable [border-radius:12%_75%_12%_75%/10.2%_63.8%_10.2%_63.8%]">
         <Photo image={preuve.photoPrincipale} sizes="(min-width: 1024px) 400px, 72vw" />
       </div>
-      <div className="absolute top-[55.36%] left-[42.86%] h-[44.64%] w-[57.14%] overflow-hidden border-[10px] border-fond bg-sable [border-radius:15%_62.5%_15%_62.5%/19.2%_80%_19.2%_80%]">
+      <div data-feuille className="absolute top-[55.36%] left-[42.86%] h-[44.64%] w-[57.14%] overflow-hidden border-[10px] border-fond bg-sable [border-radius:15%_62.5%_15%_62.5%/19.2%_80%_19.2%_80%]">
         <Photo image={preuve.photoSecondaire} sizes="(min-width: 1024px) 320px, 58vw" />
       </div>
       {preuve.badge && (

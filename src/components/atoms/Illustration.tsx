@@ -10,10 +10,19 @@ export function Illustration({
   src,
   className,
   differee = true,
+  encre,
+  encreAuChargement = false,
+  derive = false,
 }: {
   src: StaticImageData | string
   className?: string
   differee?: boolean
+  /** Sens dans lequel le décor se peint (voir « Décors encre » dans motion.css). */
+  encre?: 'gauche' | 'droite' | 'haut' | 'bas'
+  /** Peint au premier rendu (hero) plutôt qu'à l'arrivée à l'écran. */
+  encreAuChargement?: boolean
+  /** Motif de fond qui dérive lentement au défilement (bureau). */
+  derive?: boolean
 }) {
   const fichier = src as StaticImageData
   return (
@@ -27,6 +36,9 @@ export function Illustration({
       loading={differee ? 'lazy' : undefined}
       decoding="async"
       draggable={false}
+      data-encre={encre}
+      data-encre-quand={encre && encreAuChargement ? 'chargement' : undefined}
+      data-derive={derive ? '' : undefined}
       className={cn('pointer-events-none select-none', className)}
     />
   )

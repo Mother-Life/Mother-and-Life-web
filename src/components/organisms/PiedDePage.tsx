@@ -22,9 +22,10 @@ export function PiedDePage({ site, locale, ui, accueil }: Props) {
       data-surface="nuit"
       className="relative isolate overflow-hidden pt-[clamp(6rem,10vw,9.4rem)] pb-28 sm:pb-10"
     >
-      <Illustration src={dechirure} className="absolute inset-x-0 top-0 -z-10 h-auto w-full" />
+      <Illustration src={dechirure} encre="gauche" className="absolute inset-x-0 top-0 -z-10 h-auto w-full" />
       <Illustration
         src={pinceau}
+        encre="bas"
         className="absolute bottom-0 left-0 -z-10 hidden h-auto w-[15.875rem] opacity-60 lg:block"
       />
 
@@ -59,9 +60,9 @@ export function PiedDePage({ site, locale, ui, accueil }: Props) {
                   <li key={lien.href}>
                     <Link
                       href={lien.href}
-                      className="text-normal underline-offset-4 hover:text-vert-clair hover:underline"
+                      className="lien-encre text-normal transition-colors hover:text-vert-clair"
                     >
-                      {lien.libelle}
+                      <span className="lien-encre__texte">{lien.libelle}</span>
                     </Link>
                   </li>
                 ))}
@@ -72,12 +73,16 @@ export function PiedDePage({ site, locale, ui, accueil }: Props) {
             <TitreColonne>{ui.contact}</TitreColonne>
             <address className="mt-3 flex flex-col text-normal leading-10 not-italic">
               {site.telephones.map((tel) => (
-                <a key={tel} href={`tel:${tel.replace(/\s/g, '')}`} className="hover:text-vert-clair">
-                  {tel}
+                <a
+                  key={tel}
+                  href={`tel:${tel.replace(/\s/g, '')}`}
+                  className="lien-encre w-fit transition-colors hover:text-vert-clair"
+                >
+                  <span className="lien-encre__texte">{tel}</span>
                 </a>
               ))}
-              <a href={`mailto:${site.email}`} className="hover:text-vert-clair">
-                {site.email}
+              <a href={`mailto:${site.email}`} className="lien-encre w-fit transition-colors hover:text-vert-clair">
+                <span className="lien-encre__texte">{site.email}</span>
               </a>
               <span>{site.adresse}</span>
             </address>
@@ -93,8 +98,8 @@ export function PiedDePage({ site, locale, ui, accueil }: Props) {
               {site.legal.map((lien, i) => (
                 <li key={lien.href}>
                   {i > 0 && <span aria-hidden="true">· </span>}
-                  <Link href={lien.href} className="hover:text-craie hover:underline">
-                    {lien.libelle}
+                  <Link href={lien.href} className="lien-encre transition-colors hover:text-craie">
+                    <span className="lien-encre__texte">{lien.libelle}</span>
                   </Link>
                 </li>
               ))}

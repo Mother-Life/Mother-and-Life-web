@@ -135,7 +135,7 @@ docs/ARCHITECTURE_FRONT.md, CLAUDE.md, AGENTS.md
 
 **P1, pages intérieures** (chacune : route sous `src/app/[lang]/…`, gabarit, organismes réutilisés de l'accueil, entrée dans `sitemap.ts`, métadonnées FR/EN). Les liens du menu mènent pour l'instant à la page « en construction ». Ordre conseillé : Faire un don (`/don`, reçoit le GET du widget), Être accompagnée, Nos actions, L'association, Notre impact, Actualités + Article, Histoires, Albums, Campagnes, Contact, Nous rejoindre.
 
-**P1 bis, animations** : suivre `docs/PLAN_ANIMATION.md` (boutons pinceau au survol, pastilles sociales uniformes, révélations, Lottie pour 2 ou 3 illustrations seulement), après validation d'Alain.
+**Mouvement** : `docs/CHARTE_MOUVEMENT.md` fait foi (règles et catalogue des effets déjà en place : boutons, liens, réseaux, décors, photos). Toute nouvelle page réutilise ces outils.
 
 **P2, finitions**
 - Version mobile de l'accueil à faire valider par Alain (pas de maquette mobile à jour).

@@ -28,8 +28,8 @@ export function SectionCampagne({ bloc, locale, ui }: { bloc: HomeContent['campa
       data-surface="nuit"
       className="relative isolate overflow-hidden pt-[clamp(6rem,16vw,14.375rem)] pb-[clamp(7rem,16vw,14.375rem)]"
     >
-      <Illustration src={mainsGauche} className="absolute top-0 left-0 -z-10 hidden h-auto w-[15.3125rem] lg:block" />
-      <Illustration src={mainsDroite} className="absolute top-0 right-0 -z-10 hidden h-auto w-[17.09rem] lg:block" />
+      <Illustration src={mainsGauche} encre="gauche" className="absolute top-0 left-0 -z-10 hidden h-auto w-[15.3125rem] lg:block" />
+      <Illustration src={mainsDroite} encre="droite" className="absolute top-0 right-0 -z-10 hidden h-auto w-[17.09rem] lg:block" />
       <Dechirure bord="haut" className="text-craie" />
       <Dechirure bord="bas" className="text-craie" />
 

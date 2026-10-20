@@ -20,8 +20,10 @@ const icones: Partial<Record<ReseauSocial, NomIcone>> = {
 }
 
 /**
- * Liens vers les réseaux de l'association.
- * `pastilles` : ronds de 40 px du pied de page ; sinon icônes nues (barre du haut).
+ * Liens vers les réseaux de l'association, tous au même style (aucune pastille
+ * « active » : celle de la maquette était un état de survol figé).
+ * `pastilles` : ronds de 40 px du pied de page, une tache d'encre se pose au
+ * survol ; sinon icônes nues (barre du haut). Styles : composants/survols.css.
  */
 export function ReseauxSociaux({
   reseaux,
@@ -38,22 +40,14 @@ export function ReseauxSociaux({
   if (affichables.length === 0) return null
   return (
     <ul className={cn('flex items-center', pastilles ? 'gap-2.5' : 'gap-5', className)}>
-      {affichables.map(({ plateforme, url }, i) => (
+      {affichables.map(({ plateforme, url }) => (
         <li key={plateforme}>
           <a
             href={url}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={ui.reseau(noms[plateforme])}
-            className={cn(
-              'grid place-items-center transition-colors duration-200',
-              pastilles
-                ? cn(
-                    'size-10 rounded-full',
-                    i === 0 ? 'bg-axe-rose text-craie hover:bg-pigment-rose' : 'bg-craie text-nuit hover:bg-vert-clair',
-                  )
-                : cn('size-6', i === 0 ? 'text-vert-clair' : 'text-craie', 'hover:text-vert-clair'),
-            )}
+            className={pastilles ? 'pastille-sociale' : 'icone-sociale'}
           >
             <Icone nom={icones[plateforme]!} className="h-3.5 w-auto" />
           </a>

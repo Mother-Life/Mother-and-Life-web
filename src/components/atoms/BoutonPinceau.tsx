@@ -42,6 +42,8 @@ export function BoutonPinceau(props: EnLien | EnBouton) {
           <Pinceau className="bouton-pinceau__couche bouton-pinceau__couche--seconde" />
         )}
         <Pinceau className="bouton-pinceau__couche bouton-pinceau__couche--principale" />
+        {/* Seconde couche d'encre, repeinte au survol de gauche à droite */}
+        <Pinceau className="bouton-pinceau__couche bouton-pinceau__couche--peinture" />
       </span>
       {iconeAvant && (
         <Icone nom={iconeAvant} taille={tailleIcone} className="bouton-pinceau__icone" data-position="avant" />

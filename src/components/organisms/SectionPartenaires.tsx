@@ -20,7 +20,7 @@ export function SectionPartenaires({ partenaires }: { partenaires: HomeContent['
                 width={logo.width}
                 height={logo.height}
                 sizes="160px"
-                className="h-12 w-auto object-contain"
+                className="logo-partenaire h-12 w-auto object-contain"
               />
             )
             return (

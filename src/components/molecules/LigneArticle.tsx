@@ -19,8 +19,8 @@ export function LigneArticle({ article, ui }: { article: Article; ui: Ui }) {
           <p className="text-surtitre font-semibold text-texte-doux uppercase">{article.categorie}</p>
         )}
         <h3 className="text-h4 font-semibold text-texte">
-          <Link href={article.href} className="lien-etendu underline-offset-4 group-hover:underline">
-            {article.titre}
+          <Link href={article.href} className="lien-etendu lien-encre">
+            <span className="lien-encre__texte">{article.titre}</span>
           </Link>
         </h3>
         <p aria-hidden="true" className="text-petit text-texte">

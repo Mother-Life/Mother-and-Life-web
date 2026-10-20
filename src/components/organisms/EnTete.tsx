@@ -22,9 +22,9 @@ export function EnTete({ site, locale, ui, accueil }: Props) {
         <div className="contenu flex items-center justify-between gap-6 py-2.5">
           <ul className="flex items-center gap-6 font-semibold">
             <li>
-              <a href={`mailto:${site.email}`} className="flex items-center gap-2.5 hover:underline">
+              <a href={`mailto:${site.email}`} className="lien-encre flex items-center gap-2.5">
                 <Icone nom="email" className="size-4 text-vert-clair" />
-                {site.email}
+                <span className="lien-encre__texte">{site.email}</span>
               </a>
             </li>
             <li className="flex items-center gap-2.5">
@@ -43,9 +43,9 @@ export function EnTete({ site, locale, ui, accueil }: Props) {
         </div>
       </div>
 
-      <header className="sticky top-0 z-40 border-b border-filet bg-craie/85 backdrop-blur-md backdrop-saturate-150">
+      <header className="entete-collant sticky top-0 z-40 border-b border-filet bg-craie/85 backdrop-blur-md backdrop-saturate-150">
         <div className="contenu flex h-[var(--ml-entete)] items-center justify-between gap-4">
-          <Logo href={accueil} libelle={ui.accueil} className="h-12 sm:h-[4.25rem]" />
+          <Logo href={accueil} libelle={ui.accueil} className="entete-logo h-12 sm:h-[4.25rem]" />
 
           <div className="hidden xl:block">
             <NavigationPrincipale items={site.navigation} libelle={ui.navigationPrincipale} />
@@ -77,9 +77,9 @@ export function EnTete({ site, locale, ui, accueil }: Props) {
                     <SelecteurLangue locale={locale} libelle={ui.langue} className="text-normal" />
                     <a
                       href={`mailto:${site.email}`}
-                      className="text-petit text-texte-doux underline-offset-4 hover:underline"
+                      className="lien-encre text-petit text-texte-doux"
                     >
-                      {site.email}
+                      <span className="lien-encre__texte">{site.email}</span>
                     </a>
                   </div>
                 }

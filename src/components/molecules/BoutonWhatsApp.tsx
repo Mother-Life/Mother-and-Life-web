@@ -21,7 +21,7 @@ export function BoutonWhatsApp({
 }) {
   const href = `https://wa.me/${numero.replace(/\D/g, '')}${message ? `?text=${encodeURIComponent(message)}` : ''}`
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-end gap-2 px-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] max-sm:justify-between">
+    <div className="barre-pose pointer-events-none fixed inset-x-0 bottom-0 z-30 flex justify-end gap-2 px-[max(1rem,env(safe-area-inset-right))] pb-[max(1rem,env(safe-area-inset-bottom))] max-sm:justify-between">
       <BoutonPinceau href={don.href} variante="contour" className="pointer-events-auto sm:hidden">
         {don.libelle}
       </BoutonPinceau>
