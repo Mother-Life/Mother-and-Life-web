@@ -200,7 +200,7 @@ export const Dons: CollectionConfig = {
     },
     { name: 'donateurNom', type: 'text' },
     { name: 'donateurEmail', type: 'email' },
-    { name: 'donateurTéléphone', type: 'text' },
+    { name: 'donateurTelephone', type: 'text' },
     { name: 'anonyme', type: 'checkbox', defaultValue: false },
     { name: 'message', type: 'textarea' },
     {

@@ -34,6 +34,7 @@ import {
   revalidateGlobalAfterChange,
 } from '@/lib/revalidate'
 import { migrations } from './migrations'
+import { originesAutorisees } from '@/lib/security/formulaire'
 import type { CollectionConfig, GlobalConfig } from 'payload'
 
 const filename = fileURLToPath(import.meta.url)
@@ -97,7 +98,20 @@ function withGlobalRevalidation(global: GlobalConfig): GlobalConfig {
   }
 }
 
+// Origines autorisées à appeler l'API avec un cookie de session (CSRF) et en CORS.
+const origines = originesAutorisees()
+
 export default buildConfig({
+  // Durcissement : surface d'API réduite au strict nécessaire.
+  graphQL: { disable: true },
+  csrf: origines,
+  cors: origines,
+  // Profondeur maximale des relations peuplées par l'API (le site n'utilise que 0 à 2).
+  maxDepth: 3,
+  upload: {
+    // Garde-fou serveur ; les gros fichiers passent directement par R2 (clientUploads).
+    limits: { fileSize: 15_000_000 },
+  },
   admin: {
     user: Users.slug,
     importMap: {

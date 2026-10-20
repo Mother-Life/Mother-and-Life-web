@@ -232,6 +232,8 @@ export const ParcoursSante: Block = {
 
 export const DimensionsPerinatalite: Block = {
   slug: 'dimensionsPerinatalite',
+  // Nom court en base : sinon les index dépassent la limite de 63 caractères de Postgres.
+  dbName: 'dim_perinat',
   labels: { singular: 'Dimensions périnatalité', plural: 'Dimensions périnatalité' },
   fields: [
     { name: 'titre', type: 'text', localized: true },

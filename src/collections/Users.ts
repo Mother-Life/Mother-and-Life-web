@@ -1,11 +1,17 @@
 import type { CollectionConfig } from 'payload'
-import { isAdmin, isAdminOrEditor, canReadContent } from '@/access/roles'
+import { isAdmin, isAdminOrEditor } from '@/access/roles'
 
 export const Users: CollectionConfig = {
   slug: 'users',
   auth: {
     maxLoginAttempts: 5,
     lockTime: 600 * 1000,
+    // Session de 2 h, prolongée tant que l'admin est actif ; cookie réservé au HTTPS en production.
+    tokenExpiration: 2 * 60 * 60,
+    cookies: {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Lax',
+    },
   },
   admin: {
     useAsTitle: 'email',

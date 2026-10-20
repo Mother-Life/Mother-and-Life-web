@@ -12,7 +12,8 @@ import { CMS_TAG } from '@/lib/cms/cache'
  */
 function revalidateSite() {
   try {
-    revalidateTag(CMS_TAG)
+    // Expiration immédiate : la publication doit se voir dès la visite suivante.
+    revalidateTag(CMS_TAG, { expire: 0 })
     revalidatePath('/', 'layout')
   } catch {
     // Exécuté hors de Next.js (script, migration) : rien à invalider.

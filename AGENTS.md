@@ -17,8 +17,8 @@ Dernière mise à jour : 20 octobre 2026.
 
 | Couche | Choix |
 |---|---|
-| Framework | Next.js 15.4 (App Router), React 19, TypeScript strict |
-| CMS | Payload 3 (dans la même app Next, routes `src/app/(payload)`) |
+| Framework | Next.js 16.4 (App Router, Turbopack), React 19.3, TypeScript strict |
+| CMS | Payload 3.91 (dans la même app Next, routes `src/app/(payload)`). Tous les paquets `payload` et `@payloadcms/*` portent **exactement** la même version |
 | Styles | Tailwind 4 (`@theme` dans `src/styles/tokens.css`), CSS du mouvement dans `src/styles/motion.css` |
 | Base | SQLite en local (`motherandlife.db`), Postgres Neon en production |
 | Médias | Cloudflare R2 via `@payloadcms/storage-s3` (`clientUploads: true`), optionnel en local |
@@ -63,7 +63,8 @@ src/
   styles/tokens.css       design tokens (source : variables Figma)
   styles/motion.css       tout le mouvement
   assets/                 polices, décors SVG, photos et logos importés statiquement
-  middleware.ts           langue (réécriture FR) + CSP par requête
+  proxy.ts                langue (réécriture FR) + CSP par requête (ex-`middleware.ts`, renommé par Next 16)
+  lib/security/formulaire.ts  garde des routes de formulaire : origine, taille, débit, pot de miel
   migrations/             migrations Postgres (à commiter)
 docs/ARCHITECTURE_FRONT.md, CLAUDE.md, AGENTS.md
 ```
@@ -76,7 +77,7 @@ docs/ARCHITECTURE_FRONT.md, CLAUDE.md, AGENTS.md
 4. **Le mouvement vit dans `motion.css`**, en amélioration progressive, coupé en `prefers-reduced-motion`. Jamais d'opacité animée sur le candidat LCP (photo du hero sur bureau, titre sur mobile).
 5. **Sans JavaScript, tout reste lisible et utilisable.** Le don est un formulaire GET vers `/don`, la lettre une action serveur.
 6. **Accessibilité** : un seul `h1` par page, sections reliées à leur titre (`aria-labelledby`), décors `aria-hidden`, cibles de 44 px, focus visible, contraste AA. Les pigments (`#FF0099`, `#00AAFF`, `#08C577`) ne servent jamais de couleur de texte sur fond clair.
-7. **Sécurité** : la CSP à nonce (`middleware.ts`) interdit tout script en ligne ou tiers. N'ajoute pas de script externe, d'iframe ni de domaine sans mettre à jour `lib/security/csp.ts` et sans le signaler. Formulaires : zod côté serveur, pot de miel, limite de débit. Aucun secret dans le code : tout passe par les variables d'environnement.
+7. **Sécurité** : la CSP à nonce (`proxy.ts`) interdit tout script en ligne ou tiers. N'ajoute pas de script externe, d'iframe ni de domaine sans mettre à jour `lib/security/csp.ts` et sans le signaler. Formulaires : zod côté serveur, pot de miel, limite de débit. Aucun secret dans le code : tout passe par les variables d'environnement.
 8. **Chiffres et montants** : uniquement les chiffres sourcés (`CLAUDE.md`, spec §10). FCFA en principal ; l'équivalent euro est **calculé** (`lib/currency.ts`, 655,957 FCFA = 1 €), jamais tapé.
 9. **Contenu** : témoignages réels avec consentement uniquement. Jamais de chiffre, de nom ou de citation inventés.
 10. **Encodage** : tous les fichiers en UTF-8 (`npm run check:encoding`). Plusieurs anciens fichiers `docs/*.md` et `README.md` sont en Windows-1252 : à convertir si tu les modifies.

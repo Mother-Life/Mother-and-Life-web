@@ -80,7 +80,7 @@ L'accueil est intégré d'après la maquette Figma validée (`l8gg2K9v3GMjde9mpl
 - Atomic design (`components/atoms|molecules|organisms|templates`), composants serveur par défaut, îlots client minimaux.
 - Polices auto-hébergées : Nunito, Literata (citations), Caveat (surtitres et annotations). Elles remplacent Fraunces et Source Sans 3 citées plus bas.
 - Données : `lib/cms/*` lit Payload et produit des modèles de vue ; `lib/content/fallback.ts` reprend la maquette tant que l'admin est vide.
-- CSP à nonce par requête (middleware), en-têtes de sécurité dans `next.config.ts`.
+- CSP à nonce par requête (`src/proxy.ts`), en-têtes de sécurité dans `next.config.ts`. Next 16.4 et Payload 3.91 depuis le 20 octobre (mise à jour de sécurité).
 - Photos, logos partenaires et décors de la maquette récupérés le 20 octobre (`src/assets/photos/accueil-*`, `src/assets/logos/`, `src/assets/decor/`), décors vectorisés en SVG légers.
 - **Notice pour Cursor et tout agent de code : `AGENTS.md`** (état, tâches par priorité, règles, nœuds Figma des pages intérieures).
 - L'ancien front est sauvegardé dans `_sauvegardes/2026-10-20-avant-front/`.

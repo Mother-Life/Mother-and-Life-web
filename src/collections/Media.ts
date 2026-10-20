@@ -14,10 +14,13 @@ export const Media: CollectionConfig = {
   labels: { singular: 'Média', plural: 'Médiathèque' },
   upload: {
     staticDir: 'media',
-    // audio/* : notes vocales des témoignages (transcrites, sans visage)
-    mimeTypes: ['image/*', 'application/pdf', 'audio/*'],
+    // Liste fermée : pas de SVG (il peut contenir du script, donc une faille XSS
+    // une fois servi depuis notre domaine). audio/* : notes vocales des témoignages.
+    mimeTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'application/pdf', 'audio/*'],
     focalPoint: true,
     imageSizes,
+    // L'original est réencodé en WebP : sharp retire au passage les métadonnées
+    // EXIF (dont la position GPS), essentiel pour la sécurité des bénéficiaires.
     formatOptions: {
       format: 'webp',
     },

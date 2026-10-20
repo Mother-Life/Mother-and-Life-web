@@ -1,0 +1,20 @@
+# Mises à jour de sécurité automatiques (pull requests hebdomadaires).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Africa/Douala
+    open-pull-requests-limit: 5
+    groups:
+      # Payload doit monter d'un bloc : tous ses paquets portent la même version.
+      payload:
+        patterns: ['payload', '@payloadcms/*']
+      next:
+        patterns: ['next', 'eslint-config-next', 'react', 'react-dom', '@types/react', '@types/react-dom']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

@@ -40,7 +40,7 @@ src/
 
 ## Sécurité
 
-- CSP stricte par requête (`script-src 'nonce-…' 'strict-dynamic'`), posée par le middleware sur les pages publiques. L'admin a son propre régime.
+- CSP stricte par requête (`script-src 'nonce-…' 'strict-dynamic'`), posée par le proxy (`src/proxy.ts`, ex-middleware) sur les pages publiques. L'admin a son propre régime.
 - En-têtes communs dans `next.config.ts` : HSTS, nosniff, Referrer-Policy, Permissions-Policy, COOP, X-Frame-Options.
 - Formulaires : validation zod côté serveur, pot de miel, limite de débit, réponses qui ne révèlent rien.
 - Contenu du CMS rendu par React (échappé). Le JSON-LD est sérialisé et `<` échappé.

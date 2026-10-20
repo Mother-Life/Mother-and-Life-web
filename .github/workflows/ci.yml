@@ -1,0 +1,40 @@
+# Contrôles à chaque push et pull request : encodage, types, lint, build, audit.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      DATABASE_ADAPTER: sqlite
+      DATABASE_URI: file:./ci.db
+      PAYLOAD_SECRET: ci-uniquement-pas-un-vrai-secret-0123456789
+      NEXT_PUBLIC_SERVER_URL: http://localhost:3000
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Types générés par Next (next-env.d.ts)
+        run: npx next typegen
+      - name: Encodage, types et lint
+        run: npm run check
+      - name: Build
+        run: npm run build
+      - name: Failles critiques connues (dépendances de production)
+        run: npm audit --omit=dev --audit-level=critical

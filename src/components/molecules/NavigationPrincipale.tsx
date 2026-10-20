@@ -12,21 +12,23 @@ import { cn } from '@/lib/cn'
  * Fermeture : Échap (le focus revient au bouton), clic extérieur, sortie du focus.
  */
 export function NavigationPrincipale({ items, libelle }: { items: NavigationItem[]; libelle: string }) {
-  const [ouvert, setOuvert] = useState<number | null>(null)
-  const racine = useRef<HTMLUListElement>(null)
   const pathname = usePathname()
-
-  useEffect(() => setOuvert(null), [pathname])
+  // Le menu ouvert est lié à la page où il a été ouvert : changer de page le referme,
+  // sans effet ni rendu en cascade.
+  const [etat, setEtat] = useState<{ index: number; chemin: string } | null>(null)
+  const ouvert = etat && etat.chemin === pathname ? etat.index : null
+  const setOuvert = (index: number | null) => setEtat(index === null ? null : { index, chemin: pathname })
+  const racine = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
     if (ouvert === null) return
     const surClic = (e: PointerEvent) => {
-      if (!racine.current?.contains(e.target as Node)) setOuvert(null)
+      if (!racine.current?.contains(e.target as Node)) setEtat(null)
     }
     const surTouche = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return
       const bouton = racine.current?.querySelector<HTMLButtonElement>(`[data-index="${ouvert}"]`)
-      setOuvert(null)
+      setEtat(null)
       bouton?.focus()
     }
     document.addEventListener('pointerdown', surClic)

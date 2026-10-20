@@ -7,7 +7,7 @@ import { buildCsp, createNonce } from '@/lib/security/csp'
  * 2. Sécurité : chaque page publique reçoit un nonce neuf et sa CSP.
  *    Le nonce est transmis au rendu par l'en-tête de requête `x-nonce`.
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (pathname === '/fr' || pathname.startsWith('/fr/')) {

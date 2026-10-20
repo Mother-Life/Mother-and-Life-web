@@ -189,6 +189,7 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
   sessions?:
@@ -1137,7 +1138,7 @@ export interface Don {
   canal: 'momo' | 'om' | 'virement' | 'especes' | 'international';
   donateurNom?: string | null;
   donateurEmail?: string | null;
-  donateurTéléphone?: string | null;
+  donateurTelephone?: string | null;
   anonyme?: boolean | null;
   message?: string | null;
   affectation?: ('general' | 'grossesse' | 'education' | 'autonomie') | null;
@@ -1356,6 +1357,7 @@ export interface UsersSelect<T extends boolean = true> {
   resetPasswordExpiration?: T;
   salt?: T;
   hash?: T;
+  resetPasswordRequestedAt?: T;
   loginAttempts?: T;
   lockUntil?: T;
   sessions?:
@@ -2153,7 +2155,7 @@ export interface DonsSelect<T extends boolean = true> {
   canal?: T;
   donateurNom?: T;
   donateurEmail?: T;
-  donateurTéléphone?: T;
+  donateurTelephone?: T;
   anonyme?: T;
   message?: T;
   affectation?: T;

@@ -1,52 +1,43 @@
-import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { getPayloadClient } from '@/lib/payload'
+import { estUnRobot, garderFormulaire, reponseNeutre } from '@/lib/security/formulaire'
 
 const schema = z.object({
-  nom: z.string().min(2),
-  email: z.string().email(),
-  telephone: z.string().optional(),
-  sujet: z.string(),
-  message: z.string().min(10),
+  nom: z.string().trim().min(2).max(120),
+  email: z.string().trim().toLowerCase().email().max(254),
+  telephone: z.string().trim().max(30).optional(),
+  sujet: z.enum(['info', 'benevolat', 'partenariat', 'don', 'autre']),
+  message: z.string().trim().min(10).max(4000),
+  // Consentement explicite (loi camerounaise n° 2024/017) : case non cochée par défaut.
   consentement: z.literal('true'),
-  honeypot: z.string().max(0).optional(),
 })
 
+/** Formulaire de contact. Garde commune : origine, taille, débit, pot de miel. */
 export async function POST(request: Request) {
+  const refus = garderFormulaire(request, 'contact')
+  if (refus) return refus
+
+  const form = await request.formData().catch(() => null)
+  if (!form) return Response.json({ ok: false }, { status: 400 })
+  if (estUnRobot(form)) return reponseNeutre()
+
+  const donnees = schema.safeParse({
+    nom: form.get('nom'),
+    email: form.get('email'),
+    telephone: form.get('telephone') || undefined,
+    sujet: form.get('sujet'),
+    message: form.get('message'),
+    consentement: form.get('consentement'),
+  })
+  if (!donnees.success) return Response.json({ ok: false }, { status: 400 })
+
   try {
-    const form = await request.formData()
-    if (form.get('honeypot')) return NextResponse.json({ ok: true })
-
-    const data = schema.parse({
-      nom: form.get('nom'),
-      email: form.get('email'),
-      telephone: form.get('telephone') || undefined,
-      sujet: form.get('sujet'),
-      message: form.get('message'),
-      consentement: form.get('consentement'),
-      honeypot: form.get('honeypot') || '',
-    })
-
-    // Payload integration when DB is available
-    try {
-      const { getPayloadClient } = await import('@/lib/payload')
-      const payload = await getPayloadClient()
-      await payload.create({
-        collection: 'messages',
-        data: {
-          nom: data.nom,
-          email: data.email,
-          telephone: data.telephone,
-          sujet: data.sujet as 'info' | 'benevolat' | 'partenariat' | 'don' | 'autre',
-          message: data.message,
-          consentement: true,
-        },
-      })
-    } catch {
-      // DB not configured Â — accept form in dev
-    }
-
-    return NextResponse.json({ ok: true })
-  } catch {
-    return NextResponse.json({ error: 'Invalid data' }, { status: 400 })
+    const payload = await getPayloadClient()
+    const { consentement: _c, ...message } = donnees.data
+    await payload.create({ collection: 'messages', data: { ...message, consentement: true } })
+    return reponseNeutre()
+  } catch (erreur) {
+    console.error('[contact] enregistrement impossible', erreur)
+    return Response.json({ ok: false }, { status: 503 })
   }
 }

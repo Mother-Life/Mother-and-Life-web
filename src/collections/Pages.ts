@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAdminOrEditor, canReadPublished, canPublish } from '@/access/roles'
+import { isAdminOrEditor, canReadPublished } from '@/access/roles'
 import { contentBlocks } from '@/blocks'
 
 export const Pages: CollectionConfig = {

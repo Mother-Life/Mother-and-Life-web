@@ -11,6 +11,12 @@ Contexte qui rend la sécurité sérieuse ici : l'association traite des donnée
 - `PAYLOAD_SECRET` obligatoire en production, aucun secret dans le dépôt (historique Git vérifié le 20 octobre, y compris les anciennes archives `_sauvegardes/*.tgz`).
 - Lettre d'information : zod, pot de miel, limite de débit, réponses neutres.
 
+## État au 20 octobre (soir)
+
+Fait dans le code : mise à jour Payload 3.91, Next 16.4, React 19.3, sharp 0.35.5 (`npm audit` : plus aucune faille critique, les failles élevées restantes sont dans des outils de build de Payload, sans correctif publié) ; migration `securite_payload_3_91` ; routes de formulaire gardées (origine, taille, débit, pot de miel, consentement, réponses neutres, erreurs journalisées) ; SVG interdit et 15 Mo maximum dans la médiathèque, EXIF retiré par le réencodage WebP ; GraphQL désactivé ; CSRF et CORS limités aux origines du site ; cookie d'admin Secure, SameSite=Lax, session de 2 h ; profondeur d'API limitée à 3 ; nom de bloc raccourci en base (limite de 63 caractères de Postgres) ; Dependabot et CI GitHub.
+
+Reste à faire par Alain : points 2, 3, 7, 8, 12, 13 ; par le bureau : point 10.
+
 ## P0 : cette semaine
 
 1. **Mettre à jour Payload et Next (code).** `npm audit` du 20 octobre : 2 failles critiques et 14 élevées en production.
