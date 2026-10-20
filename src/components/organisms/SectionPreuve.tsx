@@ -1,8 +1,11 @@
+import motifMains from '@/assets/decor/motif-mains.svg'
+import pinceau from '@/assets/decor/preuve-pinceau.svg'
 import type { Axe, HomeContent } from '@/lib/content/types'
 import type { Locale } from '@/lib/i18n/config'
 import type { Ui } from '@/lib/i18n/ui'
 import { cn } from '@/lib/cn'
 import { vars } from '@/lib/style'
+import { Illustration } from '../atoms/Illustration'
 import { LienFleche } from '../atoms/LienFleche'
 import { Photo } from '../atoms/Photo'
 import { Surtitre } from '../atoms/Surtitre'
@@ -21,6 +24,11 @@ const couleurChiffre: Record<Axe, string> = {
 export function SectionPreuve({ preuve, ui, locale }: { preuve: HomeContent['preuve']; ui: Ui; locale: Locale }) {
   return (
     <section aria-labelledby="preuve-titre" className="relative isolate overflow-hidden bg-fond section-py">
+      <Illustration
+        src={motifMains}
+        className="absolute top-0 left-0 -z-10 hidden h-auto w-[46.5625rem] opacity-[0.06] lg:block"
+      />
+      <Illustration src={pinceau} className="absolute top-0 right-0 -z-10 hidden h-auto w-[24.34rem] lg:block" />
       <div className="contenu flex flex-col gap-20">
         <div className="grid items-center gap-x-24 gap-y-14 lg:grid-cols-[minmax(0,35rem)_1fr]">
           <Collage preuve={preuve} />

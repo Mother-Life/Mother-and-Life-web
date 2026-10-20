@@ -1,7 +1,10 @@
+import pinceauBas from '@/assets/decor/hero-pinceau-bas.svg'
+import pinceauHaut from '@/assets/decor/hero-pinceau-haut.svg'
 import type { HomeContent } from '@/lib/content/types'
 import type { Ui } from '@/lib/i18n/ui'
 import { vars } from '@/lib/style'
 import { BoutonPinceau } from '../atoms/BoutonPinceau'
+import { Illustration } from '../atoms/Illustration'
 import { LienFleche } from '../atoms/LienFleche'
 import { Photo } from '../atoms/Photo'
 import { Surtitre } from '../atoms/Surtitre'
@@ -18,7 +21,18 @@ type Props = { hero: HomeContent['hero']; ui: Ui; ancreSuite: string }
 export function HeroAccueil({ hero, ui, ancreSuite }: Props) {
   return (
     <section aria-labelledby="hero-titre" className="relative isolate overflow-hidden bg-fond">
-      <div className="contenu grid items-center gap-y-12 pt-10 pb-28 lg:min-h-[53.75rem] lg:grid-cols-[minmax(0,32.5rem)_1fr] lg:gap-x-24 lg:py-16">
+      {/* Deux coups de pinceau : Sable derrière la photo, Papier qui fond vers les portes. */}
+      <Illustration
+        src={pinceauHaut}
+        differee={false}
+        className="absolute top-0 right-0 -z-10 hidden h-auto w-[33.34rem] lg:block"
+      />
+      <Illustration
+        src={pinceauBas}
+        differee={false}
+        className="absolute bottom-0 left-0 -z-10 h-auto w-[96%] max-w-none"
+      />
+      <div className="contenu grid items-center gap-y-12 pt-10 pb-28 lg:min-h-[53.75rem] lg:grid-cols-[minmax(0,32.5rem)_1fr] lg:content-start lg:gap-x-24 lg:pt-16 lg:pb-36">
         <div className="relative z-10 flex flex-col gap-7">
           <div className="flex flex-col gap-4">
             <Surtitre className="entree tracking-[0.08em] lowercase">{hero.surtitre}</Surtitre>
@@ -41,7 +55,7 @@ export function HeroAccueil({ hero, ui, ancreSuite }: Props) {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[33.75rem] lg:mx-0 lg:justify-self-end">
+        <div className="relative mx-auto w-full max-w-[33.75rem] lg:ms-[0.1875rem] lg:me-0 lg:justify-self-start">
           <FiguresDecor />
           <div className="relative aspect-[540/640]">
             {/* Contour rose décalé, qui se trace à l'arrivée */}
@@ -61,13 +75,13 @@ export function HeroAccueil({ hero, ui, ancreSuite }: Props) {
                 d="M1.5 368.11C1.5 114.72 200.33-31.98 516.13 8.03c35.09 373.42-105.27 613.47-315.8 613.47C83.37 621.5 1.5 528.15 1.5 368.11Z"
               />
             </svg>
-            <div className="entree-feuille masque-feuille absolute inset-0 h-[96.9%] w-[96.3%] bg-sable">
+            <div className="entree-feuille masque-feuille absolute inset-0 h-[96.9%] w-[96.3%]">
               <Photo image={hero.image} prioritaire sizes="(min-width: 1024px) 520px, 90vw" />
             </div>
           </div>
 
           {hero.annotation && (
-            <p className="absolute right-0 bottom-[-5.5rem] flex w-44 flex-col items-start font-main text-[1.5rem] leading-none font-bold text-axe-rose sm:right-[-2.5rem] sm:w-48 sm:text-[1.875rem] lg:right-[-1.5rem]">
+            <p className="absolute right-0 bottom-[-5.5rem] flex w-44 flex-col items-start font-main text-[1.5rem] leading-none font-bold text-axe-rose sm:right-[-2.5rem] sm:w-[12.5rem] sm:text-[1.875rem] lg:right-[-2.2rem] lg:bottom-[-4.5rem]">
               <svg
                 viewBox="0 0 70 60"
                 width="70"

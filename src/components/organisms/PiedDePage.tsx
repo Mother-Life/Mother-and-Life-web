@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import bulle from '@/assets/decor/footer-bubble.svg'
+import pinceau from '@/assets/decor/footer-pinceau.svg'
 import dechirure from '@/assets/decor/footer-tear.svg'
 import type { SiteContent } from '@/lib/content/types'
 import type { Locale } from '@/lib/i18n/config'
@@ -8,6 +9,7 @@ import { Illustration } from '../atoms/Illustration'
 import { Logo } from '../atoms/Logo'
 import { FormulaireLettre } from '../molecules/FormulaireLettre'
 import { ReseauxSociaux } from '../molecules/ReseauxSociaux'
+import { SelecteurLangue } from '../molecules/SelecteurLangue'
 
 type Props = { site: SiteContent; locale: Locale; ui: Ui; accueil: string }
 
@@ -21,6 +23,10 @@ export function PiedDePage({ site, locale, ui, accueil }: Props) {
       className="relative isolate overflow-hidden pt-[clamp(6rem,10vw,9.4rem)] pb-28 sm:pb-10"
     >
       <Illustration src={dechirure} className="absolute inset-x-0 top-0 -z-10 h-auto w-full" />
+      <Illustration
+        src={pinceau}
+        className="absolute bottom-0 left-0 -z-10 hidden h-auto w-[15.875rem] opacity-60 lg:block"
+      />
 
       <div className="contenu flex flex-col gap-14">
         <div className="flex flex-col justify-between gap-10 lg:flex-row lg:items-start">
@@ -78,20 +84,24 @@ export function PiedDePage({ site, locale, ui, accueil }: Props) {
           </div>
         </div>
 
-        <p className="max-w-[75ch] text-[0.9375rem] leading-normal opacity-80">{site.ligneTransparence}</p>
+        <p className="text-[0.9375rem] leading-normal opacity-80">{site.ligneTransparence}</p>
 
         <div className="flex flex-col justify-between gap-3 border-t border-filet pt-6 text-legende text-texte-doux sm:flex-row">
           <p>{ui.droits(annee, site.denomination, site.numeroEnregistrement)}</p>
-          <ul className="flex flex-wrap gap-x-1">
-            {site.legal.map((lien, i) => (
-              <li key={lien.href}>
-                {i > 0 && <span aria-hidden="true">· </span>}
-                <Link href={lien.href} className="hover:text-craie hover:underline">
-                  {lien.libelle}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="flex flex-wrap items-center gap-x-1">
+            <ul className="flex flex-wrap gap-x-1">
+              {site.legal.map((lien, i) => (
+                <li key={lien.href}>
+                  {i > 0 && <span aria-hidden="true">· </span>}
+                  <Link href={lien.href} className="hover:text-craie hover:underline">
+                    {lien.libelle}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <span aria-hidden="true">·</span>
+            <SelecteurLangue locale={locale} libelle={ui.langue} />
+          </div>
         </div>
       </div>
     </footer>

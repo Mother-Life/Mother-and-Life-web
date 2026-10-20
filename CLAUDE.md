@@ -81,14 +81,15 @@ L'accueil est intégré d'après la maquette Figma validée (`l8gg2K9v3GMjde9mpl
 - Polices auto-hébergées : Nunito, Literata (citations), Caveat (surtitres et annotations). Elles remplacent Fraunces et Source Sans 3 citées plus bas.
 - Données : `lib/cms/*` lit Payload et produit des modèles de vue ; `lib/content/fallback.ts` reprend la maquette tant que l'admin est vide.
 - CSP à nonce par requête (middleware), en-têtes de sécurité dans `next.config.ts`.
-- Les photos `provisoire-*` attendent les originaux de la maquette ; plusieurs décors lourds (pinceaux du hero, mains de la campagne) restent à récupérer et à optimiser.
+- Photos, logos partenaires et décors de la maquette récupérés le 20 octobre (`src/assets/photos/accueil-*`, `src/assets/logos/`, `src/assets/decor/`), décors vectorisés en SVG légers.
+- **Notice pour Cursor et tout agent de code : `AGENTS.md`** (état, tâches par priorité, règles, nœuds Figma des pages intérieures).
 - L'ancien front est sauvegardé dans `_sauvegardes/2026-10-20-avant-front/`.
 
 ## État du code (prototype)
 
 Stack : Next.js 15, Payload CMS 3 (admin sur `/admin`), Postgres Neon en production et SQLite en local, Cloudflare R2 via `@payloadcms/storage-s3`, Resend, Tailwind 4. 18 collections, 7 globals, 5 rôles, FR/EN, formulaires zod + honeypot, modèle de consentement sur les médias.
 
-**Six bloquants avant mise en ligne :**
+**Six bloquants avant mise en ligne** (état au 20 octobre : les six sont traités ; revalidation par `revalidateTag('cms')`, migrations dans `src/migrations/`, `clientUploads` actif, création publique fermée, secret obligatoire en production, tokens v2.1 en place) :
 
 1. **Aucune revalidation.** Les pages sont générées au build (`generateStaticParams`), sans `revalidate` ni hook. `REVALIDATE_SECRET` n'est pas utilisé. Correctif : hooks `afterChange` et `afterDelete` avec `revalidatePath` / `revalidateTag` sur chaque collection et global publics.
 2. **Aucune migration.** `push` est désactivé en production et il n'existe pas de dossier `src/migrations`. Correctif : `payload migrate:create`, puis migration lancée au build Vercel.
@@ -118,3 +119,10 @@ Mineur : `README.md` est encodé en Windows-1252 (caractères cassés) et indiqu
 4. Plan de correction des six bloquants, dans l'ordre 1, 2, 3, 4, 5, 6.
 
 Livrable : `claude/SPEC_DELTA_v1.5.md` dans le projet Claude. Ensuite viendront le code (bloquants et tokens v2), puis la maquette Figma de l'accueil, bureau et mobile, avec les photos réelles.
+
+## Base de données et migrations (à respecter)
+
+- **Local** : SQLite (`motherandlife.db`), schéma synchronisé automatiquement par Payload au démarrage. Si `/admin` répond 500 après un changement de schéma (`index ... already exists`) : `npm run db:reset`, puis `npm run dev` et créer le premier compte sur `/admin` (il devient administrateur automatiquement). L'ancienne base est mise de côté dans `.local-backups/`.
+- **Production** : Postgres (Neon). Payload ne crée **jamais** les tables tout seul : le schéma vient des fichiers de `src/migrations/`, exécutés au premier démarrage du serveur (`prodMigrations` dans `payload.config.ts`).
+- **À chaque changement du schéma du CMS** (champ, collection, global, option de select) : lancer `DATABASE_ADAPTER=postgres DATABASE_URI=postgres://... npm run migrate:create <nom-court>`, puis **commiter les fichiers créés dans `src/migrations/`** avec le changement. Sans cela, la production plante (`relation "..." does not exist`).
+- Le **premier utilisateur créé** (sur `/admin/create-first-user`) reçoit le rôle admin (hook dans `Users.ts`). À faire tout de suite après le premier déploiement, avant que quelqu'un d'autre n'ouvre cette page.

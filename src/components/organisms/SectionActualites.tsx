@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import pinceauAlbum from '@/assets/decor/album-pinceau.svg'
 import vagues from '@/assets/decor/news-waves.svg'
 import type { HomeContent } from '@/lib/content/types'
 import type { Ui } from '@/lib/i18n/ui'
@@ -35,11 +36,18 @@ export function SectionActualites({ actualites, ui }: { actualites: HomeContent[
               <p className="rounded-full bg-bleu-050 px-2.5 py-1 text-surtitre font-semibold text-axe-bleu uppercase">
                 {ui.albumPhare}
               </p>
-              <div className="relative aspect-[660/420] w-full overflow-hidden rounded-porte bg-sable">
-                <Photo
-                  image={album.image}
-                  sizes="(min-width: 1024px) 660px, 92vw"
-                  className="transition-transform duration-700 ease-[var(--ease-sortie)] group-hover:scale-[1.03]"
+              <div className="relative w-full">
+                <div className="relative aspect-[660/420] w-full overflow-hidden rounded-porte bg-sable">
+                  <Photo
+                    image={album.image}
+                    sizes="(min-width: 1024px) 660px, 92vw"
+                    className="transition-transform duration-700 ease-[var(--ease-sortie)] group-hover:scale-[1.03]"
+                  />
+                </div>
+                {/* Bord peint Craie qui « déchire » le haut de la photo */}
+                <Illustration
+                  src={pinceauAlbum}
+                  className="absolute top-[-4.25rem] left-[31.5%] h-auto w-[77.2%] max-w-none"
                 />
               </div>
               <h3 className="text-h2 font-semibold text-texte">

@@ -6,7 +6,12 @@ import { getPayload } from 'payload'
 import config from '../src/payload.config'
 
 const email = process.env.ADMIN_EMAIL || 'admin@motherandlife.org'
-const password = process.env.ADMIN_PASSWORD || 'Admin123!ChangeMe'
+const password = process.env.ADMIN_PASSWORD
+
+if (!password || password.length < 12) {
+  console.error('ADMIN_PASSWORD doit etre defini dans .env (12 caracteres minimum).')
+  process.exit(1)
+}
 
 async function main() {
   const payload = await getPayload({ config })

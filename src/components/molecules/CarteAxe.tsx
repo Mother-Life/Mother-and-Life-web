@@ -22,7 +22,7 @@ export function CarteAxe({ carte, enAvant }: { carte: CarteAxeType; enAvant: boo
       )}
       <article
         className={cn(
-          'group relative flex w-full flex-col items-center gap-4 overflow-hidden rounded-porte px-5 py-10 text-center shadow-flottant transition-transform duration-300 ease-[var(--ease-sortie)] hover:-translate-y-1 sm:px-9',
+          'group relative flex w-full flex-col items-center gap-4 overflow-hidden rounded-porte px-5 py-10 md:min-h-[26.875rem] text-center shadow-flottant transition-transform duration-300 ease-[var(--ease-sortie)] hover:-translate-y-1 sm:px-9',
           enAvant ? 'bg-axe-rose text-craie' : 'bg-craie text-texte',
         )}
       >
@@ -46,7 +46,7 @@ export function CarteAxe({ carte, enAvant }: { carte: CarteAxeType; enAvant: boo
           href={carte.lien.href}
           etendu
           ton={enAvant ? 'craie' : tonLien[carte.axe]}
-          className="relative mt-6 hover:no-underline"
+          className="relative hover:no-underline"
         >
           {carte.lien.libelle}
         </LienFleche>

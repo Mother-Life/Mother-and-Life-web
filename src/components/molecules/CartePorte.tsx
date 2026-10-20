@@ -14,18 +14,20 @@ export function CartePorte({ porte, principale = false }: { porte: Porte; princi
   return (
     <article
       className={cn(
-        'group relative flex w-full flex-col gap-3.5 overflow-hidden rounded-porte p-8 transition-[translate,box-shadow] duration-300 ease-[var(--ease-sortie)] hover:-translate-y-1 hover:shadow-flottant focus-within:-translate-y-1',
+        'group relative flex w-full flex-col gap-3.5 overflow-hidden rounded-porte p-8 lg:min-h-[24.375rem] transition-[translate,box-shadow] duration-300 ease-[var(--ease-sortie)] hover:-translate-y-1 hover:shadow-flottant focus-within:-translate-y-1',
         principale ? 'bg-axe-rose text-craie' : 'bg-craie text-texte',
       )}
     >
       <Picto nom={pictos[porte.icone]} className={principale ? 'text-craie' : 'text-encre'} />
-      <h3 className="text-h2 font-semibold">{porte.titre}</h3>
-      <p className={cn('flex-1 text-normal', principale ? 'text-craie' : 'text-texte-doux')}>{porte.texte}</p>
+      <h3 className="max-w-[9ch] text-h2 font-semibold">{porte.titre}</h3>
+      <p className={cn('flex-1 text-normal', principale ? 'text-craie' : 'text-texte-doux')}>
+        {porte.texte}
+      </p>
       <LienFleche
         href={porte.lien.href}
         etendu
         ton={principale ? 'craie' : porte.icone === 'rejoindre' ? 'bleu' : 'texte'}
-        className="mt-2 hover:no-underline"
+        className="hover:no-underline"
       >
         {porte.lien.libelle}
       </LienFleche>

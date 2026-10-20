@@ -1,4 +1,6 @@
+import motifMains from '@/assets/decor/motif-mains-histoire.svg'
 import type { HomeContent } from '@/lib/content/types'
+import { Illustration } from '../atoms/Illustration'
 import { LienFleche } from '../atoms/LienFleche'
 import { Surtitre } from '../atoms/Surtitre'
 
@@ -11,6 +13,10 @@ export function SectionHistoire({ histoire }: { histoire: HomeContent['histoire'
   const { citation, prenom, role } = histoire.histoire
   return (
     <section aria-labelledby="histoire-titre" className="relative isolate overflow-hidden bg-fond section-py">
+      <Illustration
+        src={motifMains}
+        className="absolute top-0 right-0 -z-10 hidden h-auto w-[47.3125rem] opacity-[0.06] lg:block"
+      />
       <figure className="contenu flex max-w-[51.25rem] flex-col items-center gap-5 text-center" data-revele>
         <Surtitre className="justify-center">
           <span id="histoire-titre">{histoire.surtitre}</span>

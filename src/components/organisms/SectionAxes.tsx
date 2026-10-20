@@ -1,5 +1,4 @@
 import type { HomeContent } from '@/lib/content/types'
-import { cn } from '@/lib/cn'
 import { vars } from '@/lib/style'
 import { LienFleche } from '../atoms/LienFleche'
 import { Surtitre } from '../atoms/Surtitre'
@@ -29,7 +28,6 @@ export function SectionAxes({ axes }: { axes: HomeContent['axes'] }) {
               key={carte.axe}
               data-revele={carte.axe === axes.axeMisEnAvant ? 'penche' : ''}
               style={vars({ '--i': i })}
-              className={cn(carte.axe !== axes.axeMisEnAvant && 'md:my-4')}
             >
               <CarteAxe carte={carte} enAvant={carte.axe === axes.axeMisEnAvant} />
             </li>

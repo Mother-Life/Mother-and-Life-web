@@ -1,9 +1,14 @@
 import type { StaticImageData } from 'next/image'
-import equipeTrio from '@/assets/photos/provisoire-equipe-trio.webp'
-import groupeRollup from '@/assets/photos/provisoire-groupe-rollup.webp'
-import heroMereBebe from '@/assets/photos/provisoire-hero-mere-bebe.webp'
-import seance from '@/assets/photos/provisoire-seance.webp'
-import trioPorte from '@/assets/photos/provisoire-trio-porte.webp'
+import logoBalafon from '@/assets/logos/balafon-tv.webp'
+import logoFranceLait from '@/assets/logos/france-lait.webp'
+import logoHopeBlessing from '@/assets/logos/hope-and-blessing.webp'
+import heroMereBebe from '@/assets/photos/accueil-hero-mere-bebe.webp'
+import journeeEau from '@/assets/photos/accueil-journee-eau.webp'
+import permanence from '@/assets/photos/accueil-permanence.webp'
+import sensibilisation from '@/assets/photos/accueil-sensibilisation.webp'
+import vignetteCampagne from '@/assets/photos/accueil-vignette-campagne.webp'
+import vignetteProvaresc from '@/assets/photos/accueil-vignette-provaresc.webp'
+import vignetteRue from '@/assets/photos/accueil-vignette-rue.webp'
 import type { Locale } from '@/lib/i18n/config'
 import type { HomeContent, Image, SiteContent } from './types'
 
@@ -12,7 +17,8 @@ import type { HomeContent, Image, SiteContent } from './types'
  * Servent tant que la base est vide ou injoignable : le site ne s'affiche
  * jamais cassé. Dès qu'un champ est rempli dans l'admin, il prend le dessus.
  *
- * Les photos marquées « provisoire » attendent les originaux de la maquette.
+ * Photos et logos exportés de la maquette (hero : photo Envato sous licence,
+ * le reste : galeries de l’association).
  */
 
 function photo(fichier: StaticImageData, alt: string, focal?: Image['focal']): Image {
@@ -218,8 +224,8 @@ export function accueilParDefaut(locale: Locale): HomeContent {
       lienSecondaire: lien(fr ? 'Découvrir nos actions' : 'See our work', c('/nos-actions')),
       image: photo(
         heroMereBebe,
-        fr ? 'Une mère sourit en tenant son bébé contre elle.' : 'A mother smiles while holding her baby close.',
-        { x: 62, y: 40 },
+        fr ? 'Une mère embrasse son bébé, qui rit aux éclats.' : 'A mother kisses her laughing baby.',
+        { x: 50, y: 0 },
       ),
       annotation: fr ? 'Ici, on vous attend avec le sourire !' : 'We’re waiting for you with a smile!',
     },
@@ -262,16 +268,18 @@ export function accueilParDefaut(locale: Locale): HomeContent {
         : 'Founded in 2022, Mother & Life grew out of first-hand fieldwork. Faced with poor access to quality maternal care, bridging medical expertise and social reality became urgent.',
       lien: lien(fr ? 'Découvrir l’association' : 'About the association', c('/l-association')),
       photoPrincipale: photo(
-        equipeTrio,
-        fr ? 'Trois membres de l’équipe en polo Mother & Life.' : 'Three team members in Mother & Life polo shirts.',
-        { x: 55, y: 35 },
+        permanence,
+        fr
+          ? 'L’équipe de Mother & Life lors d’une permanence, devant le kakémono de l’association.'
+          : 'The Mother & Life team at a drop-in session, in front of the association’s banner.',
+        { x: 50, y: 40 },
       ),
       photoSecondaire: photo(
-        groupeRollup,
+        sensibilisation,
         fr
-          ? 'L’équipe et ses partenaires réunis lors d’une séance de travail.'
-          : 'The team and partners at a working session.',
-        { x: 50, y: 40 },
+          ? 'L’équipe et ses partenaires réunis lors d’une séance de sensibilisation.'
+          : 'The team and partners at an awareness session.',
+        { x: 50, y: 45 },
       ),
       badge: {
         valeur: fr ? '6 sur 10' : '6 in 10',
@@ -391,10 +399,10 @@ export function accueilParDefaut(locale: Locale): HomeContent {
           : 'Aquatic wellbeing workshop for pregnant women, in pictures.',
         href: c('/albums/une-journee-dans-leau'),
         image: photo(
-          seance,
+          journeeEau,
           fr
-            ? 'Une animatrice s’adresse à un groupe de femmes enceintes.'
-            : 'A facilitator speaks to a group of pregnant women.',
+            ? 'Une animatrice s’adresse aux femmes enceintes au bord de la piscine.'
+            : 'A facilitator speaks to pregnant women by the pool.',
           { x: 50, y: 40 },
         ),
       },
@@ -403,26 +411,30 @@ export function accueilParDefaut(locale: Locale): HomeContent {
           categorie: fr ? 'Événement' : 'Event',
           titre: fr ? 'Mother & Life dans la rue' : 'Mother & Life on the streets',
           href: c('/actualites/mother-and-life-dans-la-rue'),
-          image: photo(trioPorte, '', { x: 50, y: 35 }),
+          image: photo(vignetteRue, '', { x: 50, y: 40 }),
         },
         {
           categorie: fr ? 'Campagne' : 'Campaign',
           titre: fr ? 'Panier de vie 2026 : la collecte est ouverte' : 'Life Basket 2026: donations are open',
           href: c('/actualites/panier-de-vie-2026'),
-          image: photo(groupeRollup, '', { x: 50, y: 40 }),
+          image: photo(vignetteCampagne, '', { x: 50, y: 40 }),
         },
         {
           categorie: fr ? 'Partenariat' : 'Partnership',
           titre: fr ? 'Réunion de travail avec Provaresc' : 'Working meeting with Provaresc',
           href: c('/actualites/reunion-provaresc'),
-          image: photo(equipeTrio, '', { x: 50, y: 35 }),
+          image: photo(vignetteProvaresc, '', { x: 50, y: 35 }),
         },
       ],
     },
     partenaires: {
       afficher: true,
       surtitre: fr ? 'Ils nous accompagnent' : 'They support us',
-      logos: [],
+      logos: [
+        { nom: 'Hope & Blessing, santé et maternité', logo: photo(logoHopeBlessing, 'Hope & Blessing') },
+        { nom: 'Balafon TV', logo: photo(logoBalafon, 'Balafon TV') },
+        { nom: 'France Lait', logo: photo(logoFranceLait, 'France Lait') },
+      ],
     },
   }
 }

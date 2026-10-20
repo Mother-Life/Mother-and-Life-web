@@ -33,6 +33,7 @@ import {
   revalidateAfterDelete,
   revalidateGlobalAfterChange,
 } from '@/lib/revalidate'
+import { migrations } from './migrations'
 import type { CollectionConfig, GlobalConfig } from 'payload'
 
 const filename = fileURLToPath(import.meta.url)
@@ -141,6 +142,8 @@ export default buildConfig({
           connectionString: process.env.DATABASE_URI || '',
         },
         push: process.env.NODE_ENV !== 'production',
+        // En production, le schéma est créé ici : Vercel n'a pas de dossier migrations lisible au runtime.
+        prodMigrations: migrations,
       })
     : sqliteAdapter({
         client: {

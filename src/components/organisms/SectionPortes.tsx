@@ -1,4 +1,4 @@
-import mains from '@/assets/decor/doors-hands.svg'
+import mains from '@/assets/decor/portes-mains.svg'
 import type { HomeContent } from '@/lib/content/types'
 import { vars } from '@/lib/style'
 import { Illustration } from '../atoms/Illustration'
@@ -11,14 +11,14 @@ export function SectionPortes({ portes, id }: { portes: HomeContent['portes']; i
       id={id}
       aria-labelledby={`${id}-titre`}
       data-surface="papier"
-      className="relative isolate overflow-hidden pt-2 pb-[clamp(4rem,7vw,6.5rem)]"
+      className="relative isolate overflow-hidden bg-fond pt-12 pb-20 lg:pt-[6.6875rem] lg:pb-[12.6875rem]"
     >
       <h2 id={`${id}-titre`} className="lecteur-seul">
         {portes.titre}
       </h2>
       <Illustration
         src={mains}
-        className="absolute top-1/2 left-[-7rem] -z-10 hidden h-[21.5rem] w-auto -translate-y-1/2 lg:block"
+        className="absolute top-[10.375rem] left-0 -z-10 hidden h-auto w-[14.625rem] lg:block"
       />
       <ul className="contenu grid max-w-md justify-center gap-6 sm:max-w-none sm:grid-cols-[repeat(auto-fit,minmax(0,18.75rem))]">
         {portes.items.map((porte, i) => (

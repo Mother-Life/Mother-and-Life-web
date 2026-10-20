@@ -13,13 +13,16 @@
     "check": "npm run check:encoding && npm run typecheck && npm run lint",
     "payload": "node --env-file=.env ./node_modules/payload/bin.js",
     "migrate": "node --env-file=.env ./node_modules/payload/bin.js migrate",
+    "migrate:create": "node --env-file=.env ./node_modules/payload/bin.js migrate:create",
+    "migrate:status": "node --env-file=.env ./node_modules/payload/bin.js migrate:status",
     "generate:types": "node --env-file=.env ./node_modules/payload/bin.js generate:types",
     "create-admin": "node --env-file=.env --import tsx scripts/create-admin.ts",
     "seed": "node --env-file=.env --import tsx scripts/seed.ts",
     "import:medias": "tsx scripts/import-medias.ts",
     "check:medias": "tsx scripts/check-medias.ts",
     "optimize:assets": "tsx scripts/optimize-assets.ts",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
+    "db:reset": "node --env-file=.env scripts/reset-local-db.mjs"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.88.0",

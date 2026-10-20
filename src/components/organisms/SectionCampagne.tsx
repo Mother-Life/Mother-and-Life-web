@@ -1,10 +1,12 @@
+import mainsDroite from '@/assets/decor/campagne-mains-droite.svg'
+import mainsGauche from '@/assets/decor/campagne-mains-gauche.svg'
 import { formaterEquivalentEuro, formaterFcfa, formaterNombre } from '@/lib/currency'
 import type { HomeContent } from '@/lib/content/types'
 import type { Locale } from '@/lib/i18n/config'
 import type { Ui } from '@/lib/i18n/ui'
 import { vars } from '@/lib/style'
 import { Dechirure } from '../atoms/Dechirure'
-import { LienFleche } from '../atoms/LienFleche'
+import { Illustration } from '../atoms/Illustration'
 import { Surtitre } from '../atoms/Surtitre'
 import { JaugeFeuilles } from '../molecules/JaugeFeuilles'
 import { WidgetDon } from '../molecules/WidgetDon'
@@ -24,8 +26,10 @@ export function SectionCampagne({ bloc, locale, ui }: { bloc: HomeContent['campa
     <section
       aria-labelledby="campagne-titre"
       data-surface="nuit"
-      className="relative isolate overflow-hidden pt-[clamp(6rem,14vw,14.4rem)] pb-[clamp(7rem,15vw,14.4rem)]"
+      className="relative isolate overflow-hidden pt-[clamp(6rem,16vw,14.375rem)] pb-[clamp(7rem,16vw,14.375rem)]"
     >
+      <Illustration src={mainsGauche} className="absolute top-0 left-0 -z-10 hidden h-auto w-[15.3125rem] lg:block" />
+      <Illustration src={mainsDroite} className="absolute top-0 right-0 -z-10 hidden h-auto w-[17.09rem] lg:block" />
       <Dechirure bord="haut" className="text-craie" />
       <Dechirure bord="bas" className="text-craie" />
 
@@ -64,9 +68,6 @@ export function SectionCampagne({ bloc, locale, ui }: { bloc: HomeContent['campa
             />
             <p className="text-petit text-texte-doux">{ui.jaugeNote}</p>
           </div>
-          <LienFleche href={c.lien.href} ton="craie">
-            {c.lien.libelle}
-          </LienFleche>
         </div>
 
         <div data-revele style={vars({ '--i': 1 })}>

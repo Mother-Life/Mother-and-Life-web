@@ -39,7 +39,7 @@ export function WidgetDon({ locale, action, campagne, paliers, libelles }: Props
   const montantLibre = Number(libre.replace(/\D/g, ''))
 
   return (
-    <div className="relative mt-14 rounded-porte border border-white/15 bg-nuit px-6 pt-20 pb-8 sm:px-8">
+    <div className="relative mt-14 rounded-porte border border-white/15 bg-nuit px-6 pt-20 pb-8 sm:px-8 lg:mt-[1.1875rem]">
       <div className="absolute inset-x-6 -top-14 flex items-center justify-between gap-4 rounded-bandeau bg-axe-vert py-4 ps-4 pe-4 text-craie shadow-[0_10px_15px_-3px_rgb(0_0_0/0.1),0_4px_6px_-4px_rgb(0_0_0/0.1)] sm:inset-x-8">
         <div>
           <p className="text-h6 font-semibold">{libelles.bandeauTitre}</p>
@@ -51,7 +51,7 @@ export function WidgetDon({ locale, action, campagne, paliers, libelles }: Props
       <form action={action} method="get" className="flex flex-col gap-5">
         {campagne && <input type="hidden" name="campagne" value={campagne} />}
         <fieldset className="flex flex-col gap-2">
-          <legend className="mb-2 text-legende font-bold tracking-[0.04em] text-argile uppercase">
+          <legend className="mb-2 text-legende leading-4 font-bold tracking-[0.04em] text-argile uppercase">
             {libelles.choisir}
           </legend>
           <div className="grid gap-2 sm:grid-cols-3">
@@ -61,7 +61,7 @@ export function WidgetDon({ locale, action, campagne, paliers, libelles }: Props
                 <label
                   key={palier.montant}
                   className={cn(
-                    'flex cursor-pointer items-center justify-between gap-1.5 rounded-panneau px-4 py-3 text-center transition-colors sm:flex-col sm:justify-center sm:px-2 sm:pt-3 sm:pb-4 has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-vert-clair',
+                    'flex cursor-pointer items-center justify-between gap-1.5 rounded-panneau px-4 py-3 text-center transition-colors sm:min-h-[4.125rem] sm:flex-col sm:justify-center sm:px-2 sm:pt-2.5 sm:pb-3.5 has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-vert-clair',
                     actif
                       ? 'border-2 border-pigment-rose bg-pigment-rose/20'
                       : 'border border-white/20 bg-white/5 hover:border-white/40',
@@ -81,7 +81,7 @@ export function WidgetDon({ locale, action, campagne, paliers, libelles }: Props
                   <span className="text-[0.875rem] leading-5 font-bold text-craie">
                     {formaterFcfa(palier.montant, locale)}
                   </span>
-                  <span className="text-legende text-argile">
+                  <span className="text-legende leading-4 text-argile">
                     {formaterEquivalentEuro(palier.montant, locale)}
                     {palier.libelle && ` · ${palier.libelle}`}
                   </span>
@@ -92,9 +92,18 @@ export function WidgetDon({ locale, action, campagne, paliers, libelles }: Props
         </fieldset>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor={`${id}-libre`} className="text-legende font-bold tracking-[0.04em] text-argile uppercase">
-            {libelles.libre}
-          </label>
+          <div className="flex items-baseline justify-between gap-4">
+            <label
+              htmlFor={`${id}-libre`}
+              className="text-legende leading-4 font-bold tracking-[0.04em] text-argile uppercase"
+            >
+              {libelles.libre}
+            </label>
+            {/* L'équivalent en euros suit la saisie, sans décaler le formulaire. */}
+            <p id={`${id}-euro`} aria-live="polite" className="text-legende leading-4 text-argile">
+              {montantLibre >= MONTANT_MIN ? formaterEquivalentEuro(montantLibre, locale) : ''}
+            </p>
+          </div>
           <div className="relative">
             <input
               id={`${id}-libre`}
@@ -112,9 +121,6 @@ export function WidgetDon({ locale, action, campagne, paliers, libelles }: Props
               FCFA
             </span>
           </div>
-          <p id={`${id}-euro`} aria-live="polite" className="min-h-5 text-legende text-argile">
-            {montantLibre >= MONTANT_MIN ? formaterEquivalentEuro(montantLibre, locale) : ''}
-          </p>
         </div>
 
         <BoutonPinceau type="submit" variante="rose" taille="l" iconeApres="fleche-droite" className="w-full">
