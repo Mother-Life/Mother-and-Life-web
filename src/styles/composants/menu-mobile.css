@@ -1,0 +1,40 @@
+/*
+ * Menu mobile : <dialog> modal qui glisse depuis le bord droit.
+ * Entrée et sortie animées nativement (@starting-style, display et overlay
+ * en transition discrète) ; simple apparition en mouvement réduit.
+ */
+@layer components {
+  .menu-mobile {
+    inset-block: 0;
+    inset-inline: auto 0;
+    box-shadow: var(--shadow-flottant);
+  }
+  .menu-mobile::backdrop {
+    background: rgb(6 32 43 / 0.55);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .menu-mobile,
+    .menu-mobile::backdrop {
+      transition:
+        translate var(--ml-duree) var(--ease-sortie),
+        opacity var(--ml-duree) var(--ease-sortie),
+        display var(--ml-duree) allow-discrete,
+        overlay var(--ml-duree) allow-discrete;
+    }
+    .menu-mobile:not([open]) {
+      translate: 100% 0;
+    }
+    .menu-mobile:not([open])::backdrop {
+      opacity: 0;
+    }
+    @starting-style {
+      .menu-mobile[open] {
+        translate: 100% 0;
+      }
+      .menu-mobile[open]::backdrop {
+        opacity: 0;
+      }
+    }
+  }
+}

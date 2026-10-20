@@ -1,0 +1,160 @@
+/*
+ * Mother & Life · design tokens v2.1
+ * Source : variables du fichier Figma « Site web » (l8gg2K9v3GMjde9mplNi16),
+ * collections Couleurs, Rôles, Espacements & formes, Typographie.
+ *
+ * Trois niveaux, à respecter dans cet ordre :
+ *  1. Primitives (@theme)            valeurs brutes de la marque. Un composant ne les
+ *                                    utilise que pour une intention fixe (ex. carte rose).
+ *  2. Rôles (:root, data-surface)    ce que les composants consomment par défaut.
+ *                                    Ils changent avec la surface (craie, papier, nuit).
+ *  3. Alias Tailwind (@theme inline) exposent les rôles en utilitaires
+ *                                    (`bg-fond`, `text-texte`, `border-filet`…).
+ *                                    `inline` est obligatoire : sans lui, la variable
+ *                                    serait résolue sur :root et la bascule de surface
+ *                                    ne suivrait pas.
+ *
+ * Échelle typographique : valeurs bureau de la maquette 1440, interpolées depuis
+ * 375 px par clamp(). Le corps de texte ne descend jamais sous 16 px.
+ */
+
+@theme {
+  /* — Pigments du logo : aplats, symbole, texte sur Nuit uniquement */
+  --color-pigment-rose: #ff0099;
+  --color-pigment-bleu: #00aaff;
+  --color-pigment-vert: #08c577;
+
+  /* — Axes : variantes accessibles (texte, liens, boutons, icônes) */
+  --color-axe-rose: #b00060;
+  --color-axe-bleu: #006c8e;
+  --color-axe-vert: #08704d;
+
+  /* — Teintes claires */
+  --color-rose-050: #ffe9f0;
+  --color-bleu-050: #e2f3f8;
+  --color-bleu-clair: #5bc8ff;
+  --color-vert-clair: #68dcac;
+
+  /* — Neutres */
+  --color-craie: #fffcf7;
+  --color-papier: #f5f0e6;
+  --color-sable: #ebe4d6;
+  --color-nuit: #06202b;
+  --color-encre: #1b3c46;
+  --color-ardoise: #53636a;
+  --color-limon: #8c7f6b;
+  --color-argile: #d6cbba;
+
+  /* — Familles (les variables --font-* sont posées par next/font/local) */
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-serif: var(--font-literata), Georgia, 'Times New Roman', serif;
+  --font-main: var(--font-caveat), 'Segoe Print', 'Bradley Hand', cursive;
+
+  /* — Échelle typographique */
+  --text-legende: 0.8125rem;
+  --text-legende--line-height: 1.25rem;
+  --text-surtitre: 0.875rem;
+  --text-surtitre--line-height: 1.25rem;
+  --text-surtitre--letter-spacing: 0.0625rem;
+  --text-bouton-s: 0.875rem;
+  --text-bouton-s--line-height: 1.25rem;
+  --text-bouton-m: 1rem;
+  --text-bouton-m--line-height: 1.375rem;
+  --text-bouton-l: 1.125rem;
+  --text-bouton-l--line-height: 1.625rem;
+  --text-petit: 1rem;
+  --text-petit--line-height: 1.5rem;
+  --text-normal: clamp(1rem, 0.956rem + 0.188vw, 1.125rem);
+  --text-normal--line-height: 1.556;
+  --text-large: clamp(1.125rem, 1.081rem + 0.188vw, 1.25rem);
+  --text-large--line-height: 1.6;
+  --text-h6: 1.125rem;
+  --text-h6--line-height: 1.625rem;
+  --text-h4: clamp(1.25rem, 1.206rem + 0.188vw, 1.375rem);
+  --text-h4--line-height: 1.364;
+  --text-main: clamp(1.5rem, 1.412rem + 0.376vw, 1.75rem);
+  --text-main--line-height: 1.15;
+  --text-main--letter-spacing: 0.0625rem;
+  --text-h2: clamp(1.625rem, 1.405rem + 0.939vw, 2.25rem);
+  --text-h2--line-height: 1.222;
+  --text-h2--letter-spacing: -0.015625rem;
+  --text-h1: clamp(1.875rem, 1.567rem + 1.315vw, 2.75rem);
+  --text-h1--line-height: 1.182;
+  --text-h1--letter-spacing: -0.03125rem;
+  --text-citation: clamp(1.375rem, 1.243rem + 0.563vw, 1.75rem);
+  --text-citation--line-height: 1.43;
+  --text-display: clamp(2.25rem, 1.81rem + 1.878vw, 3.5rem);
+  --text-display--line-height: 1.143;
+  --text-display--letter-spacing: -0.03125rem;
+  --text-marque: clamp(2.5rem, 1.532rem + 4.131vw, 5.25rem);
+  --text-marque--line-height: 0.96;
+  --text-defilement: clamp(3rem, 2.208rem + 3.38vw, 5.25rem);
+  --text-defilement--line-height: 1.19;
+
+  /* — Formes : le rayon suit la fonction */
+  --radius-champ: 0.25rem;
+  --radius-carte: 0.5rem;
+  --radius-panneau: 0.75rem;
+  --radius-bandeau: 1rem;
+  --radius-porte: 1.5rem;
+
+  /* — Ombre unique : éléments qui flottent (carte d'axe, menu, widget) */
+  --shadow-flottant: 0 20px 24px -4px rgb(16 24 40 / 0.08), 0 8px 8px -4px rgb(16 24 40 / 0.03);
+
+  /* — Mouvement : courbes */
+  --ease-sortie: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-ressort: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --ease-encre: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@theme inline {
+  --color-fond: var(--ml-bg);
+  --color-fond-alt: var(--ml-bg-alt);
+  --color-texte: var(--ml-text);
+  --color-texte-doux: var(--ml-text-muted);
+  --color-filet: var(--ml-rule);
+  --color-bordure: var(--ml-border);
+  --color-accent: var(--ml-accent);
+}
+
+:root {
+  /* Rôles, surface Craie (par défaut) */
+  --ml-bg: var(--color-craie);
+  --ml-bg-alt: var(--color-papier);
+  --ml-text: var(--color-encre);
+  --ml-text-muted: var(--color-ardoise);
+  --ml-rule: var(--color-argile);
+  --ml-border: var(--color-limon);
+  --ml-accent: var(--color-axe-rose);
+  --ml-focus: var(--color-axe-rose);
+
+  /* Mouvement : durées */
+  --ml-duree-courte: 160ms;
+  --ml-duree: 320ms;
+  --ml-duree-longue: 720ms;
+  --ml-duree-trace: 900ms;
+
+  /* Mise en page : 1200 px de contenu et 120 px de marge dans la maquette 1440 */
+  --ml-contenu: 75rem;
+  --ml-gouttiere: clamp(1rem, 0.32rem + 4.5vw, 3.75rem);
+  --ml-section: clamp(4rem, 2.9rem + 4.7vw, 7rem);
+  --ml-entete: 4.75rem;
+}
+
+[data-surface='papier'] {
+  --ml-bg: var(--color-papier);
+  --ml-bg-alt: var(--color-craie);
+}
+
+/* Nuit : seule surface où les pigments purs peuvent porter du texte (AA vérifié). */
+[data-surface='nuit'] {
+  --ml-bg: var(--color-nuit);
+  --ml-bg-alt: var(--color-encre);
+  --ml-text: var(--color-craie);
+  --ml-text-muted: var(--color-argile);
+  --ml-rule: var(--color-encre);
+  --ml-border: rgb(255 255 255 / 0.2);
+  --ml-accent: var(--color-pigment-rose);
+  --ml-focus: var(--color-vert-clair);
+  color-scheme: dark;
+}

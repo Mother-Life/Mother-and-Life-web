@@ -1,0 +1,182 @@
+/*
+ * Bouton « empreinte d'encre »
+ *
+ * Le fond est le tracé du pinceau de la maquette, dessiné en SVG (symbole
+ * partagé, mis en cache une fois). Comme c'est un vrai tracé et non un masque
+ * figé, chaque état du bouton anime le pinceau lui-même :
+ *
+ *   repos      le trait est posé
+ *   apparition le trait se peint de gauche à droite (classe .entree-trace ou
+ *              data-revele="trace" sur .bouton-pinceau__fond)
+ *   survol     le trait s'étire et pivote d'un demi-degré ; une seconde couche
+ *              d'encre, décalée, vient l'épaissir
+ *   pression   le trait s'écrase légèrement
+ *   focus      anneau de focus franc, le trait reste lisible
+ *   attente    (aria-busy) le trait respire pendant l'envoi d'un formulaire
+ *   désactivé  le trait passe en limon
+ *
+ * Contraste : chaque couple encre/texte est vérifié AA (voir TOKENS_design_v2).
+ * Le rose pigment porte un texte Nuit (4,6:1), jamais un texte clair.
+ */
+
+@layer components {
+  .bouton-pinceau {
+    --bp-encre: var(--color-encre);
+    --bp-texte: var(--color-craie);
+    --bp-trait: var(--color-limon);
+    --bp-hauteur: 3.25rem;
+    --bp-marge: 1.75rem;
+
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-block-size: var(--bp-hauteur);
+    padding-inline: var(--bp-marge);
+    border-radius: 999px;
+    color: var(--bp-texte);
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: scale var(--ml-duree-courte) var(--ease-sortie);
+  }
+
+  .bouton-pinceau[data-taille='s'] {
+    font-size: var(--text-bouton-s);
+    line-height: var(--text-bouton-s--line-height);
+  }
+  .bouton-pinceau[data-taille='m'] {
+    --bp-hauteur: 3.875rem;
+    --bp-marge: 1.375rem;
+    font-size: var(--text-bouton-m);
+    line-height: var(--text-bouton-m--line-height);
+  }
+  .bouton-pinceau[data-taille='l'] {
+    --bp-hauteur: 4.5rem;
+    --bp-marge: 2.25rem;
+    font-size: var(--text-bouton-l);
+    line-height: var(--text-bouton-l--line-height);
+  }
+
+  /* Variantes d'encre */
+  .bouton-pinceau[data-variante='rose'] {
+    --bp-encre: var(--color-pigment-rose);
+    --bp-texte: var(--color-nuit);
+  }
+  .bouton-pinceau[data-variante='action'] {
+    --bp-encre: var(--color-axe-rose);
+  }
+  .bouton-pinceau[data-variante='vert'] {
+    --bp-encre: var(--color-axe-vert);
+  }
+  .bouton-pinceau[data-variante='contour'] {
+    --bp-encre: var(--color-craie);
+    --bp-texte: var(--color-encre);
+  }
+
+  /* Couches du pinceau */
+  .bouton-pinceau__fond {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .bouton-pinceau__couche {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: visible;
+    fill: var(--bp-encre);
+    transform-origin: 50% 55%;
+    transition:
+      transform var(--ml-duree) var(--ease-sortie),
+      opacity var(--ml-duree) var(--ease-sortie),
+      fill var(--ml-duree) var(--ease-sortie);
+  }
+  .bouton-pinceau__couche--seconde {
+    opacity: 0;
+    transform: translate(3px, 2px) scaleX(0.98);
+  }
+  .bouton-pinceau__couche--trait {
+    fill: var(--bp-trait);
+    transform: scale(1.03, 1.12);
+  }
+
+  @media (hover: hover) {
+    .bouton-pinceau:hover .bouton-pinceau__couche--principale {
+      transform: scaleX(1.04) rotate(-0.6deg);
+    }
+    .bouton-pinceau:hover .bouton-pinceau__couche--seconde {
+      opacity: 0.35;
+      transform: translate(5px, 3px) scaleX(1.06) rotate(0.8deg);
+    }
+    .bouton-pinceau:hover .bouton-pinceau__couche--trait {
+      transform: scale(1.07, 1.14) rotate(-0.6deg);
+    }
+  }
+
+  .bouton-pinceau:active {
+    scale: 0.97;
+  }
+  .bouton-pinceau:active .bouton-pinceau__couche--principale {
+    transform: scale(1.02, 0.9);
+  }
+
+  .bouton-pinceau:focus-visible {
+    outline: 3px solid var(--ml-focus);
+    outline-offset: 4px;
+  }
+
+  .bouton-pinceau[aria-busy='true'] {
+    cursor: progress;
+  }
+  .bouton-pinceau[aria-disabled='true'],
+  .bouton-pinceau:disabled {
+    --bp-encre: var(--color-limon);
+    --bp-texte: var(--color-craie);
+    cursor: not-allowed;
+  }
+
+  /* Contenu : la flèche ou l'icône glisse au survol */
+  .bouton-pinceau__icone {
+    flex: none;
+    transition: translate var(--ml-duree) var(--ease-ressort);
+  }
+  @media (hover: hover) {
+    .bouton-pinceau:hover .bouton-pinceau__icone[data-position='apres'] {
+      translate: 0.25rem 0;
+    }
+  }
+}
+
+@keyframes pinceau-respire {
+  50% {
+    transform: scaleX(0.94) rotate(0.6deg);
+    opacity: 0.8;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bouton-pinceau,
+  .bouton-pinceau__couche,
+  .bouton-pinceau__icone {
+    transition: none;
+  }
+  .bouton-pinceau .bouton-pinceau__couche {
+    transform: none;
+  }
+  .bouton-pinceau .bouton-pinceau__couche--trait {
+    transform: scale(1.03, 1.12);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bouton-pinceau[aria-busy='true'] .bouton-pinceau__couche--principale {
+    animation: pinceau-respire 1.2s ease-in-out infinite;
+  }
+}

@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build
+.next/
+.next-dev/
+out/
+dist/
+build/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Payload
+media/
+motherandlife.db
+motherandlife.db-shm
+motherandlife.db-wal
+
+# Media source archives (spec ù4.2)
+Medias/00_source/
+Medias/99_archive/
+
+# Legal documents ù never commit PV with ID numbers (spec ù8.8)
+*.pdf
+!public/documents/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
