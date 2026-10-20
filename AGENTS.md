@@ -125,13 +125,16 @@ docs/ARCHITECTURE_FRONT.md, CLAUDE.md, AGENTS.md
 
 ### À faire, par priorité
 
-**P0, avant d'ouvrir le site au public**
-1. Pousser les migrations et les correctifs, vérifier que `/admin` s'ouvre en ligne, et créer **immédiatement** le premier compte admin (la page de création est ouverte au premier venu).
+**P0, avant d'ouvrir le site au public** (détail : `docs/PLAN_SECURITE.md`)
+1. Créer **immédiatement** le premier compte admin en ligne (la page de création est ouverte au premier venu). Migrations et admin vérifiés en ligne le 20 octobre.
+1 bis. Mettre à jour Payload (≥ 3.90 : injection SQL, hachage des mots de passe) et Next (dernière 15.5.x), puis `migrate:create` si le schéma bouge. Interdire le SVG dans la médiathèque.
 2. Revoir `src/app/api/contact`, `api/don` et `api/candidature` : ajouter pot de miel, limite de débit (`lib/security/debit.ts`) et réponses neutres, comme `lib/actions/newsletter.ts`. Idéalement, les convertir en actions serveur. Le champ `donateurTéléphone` (accent dans un nom de champ) est à renommer.
 3. Règle CORS sur le bucket R2 (`PUT`, en-tête `If-None-Match`) si les médias passent par R2.
 4. Pages légales : contenu réel (mentions légales, confidentialité) à fournir par l'association.
 
 **P1, pages intérieures** (chacune : route sous `src/app/[lang]/…`, gabarit, organismes réutilisés de l'accueil, entrée dans `sitemap.ts`, métadonnées FR/EN). Les liens du menu mènent pour l'instant à la page « en construction ». Ordre conseillé : Faire un don (`/don`, reçoit le GET du widget), Être accompagnée, Nos actions, L'association, Notre impact, Actualités + Article, Histoires, Albums, Campagnes, Contact, Nous rejoindre.
+
+**P1 bis, animations** : suivre `docs/PLAN_ANIMATION.md` (boutons pinceau au survol, pastilles sociales uniformes, révélations, Lottie pour 2 ou 3 illustrations seulement), après validation d'Alain.
 
 **P2, finitions**
 - Version mobile de l'accueil à faire valider par Alain (pas de maquette mobile à jour).
